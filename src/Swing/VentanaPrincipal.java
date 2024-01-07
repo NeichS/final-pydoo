@@ -69,7 +69,7 @@ public class VentanaPrincipal {
         botonAdmin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //logica de administrador
+                cardLayout.show(cardPanel, "ADMIN SECURITY VERIFICATION");
             }
         });
         CustomButton botonAlumno = new CustomButton("Soy Alumno", "#474747");
@@ -302,7 +302,7 @@ public class VentanaPrincipal {
         centerPanel.add(apellido);
         newUserPanel.add(centerPanel, BorderLayout.CENTER);
 
-        JTextField carrera = new JTextField();
+        /*JTextField carrera = new JTextField();
         carrera.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "carrera"));
         carrera.setMaximumSize(new Dimension(200, 40)); // Limitar la altura del campo
         carrera.setBackground(Color.decode("#474747")); // Establecer el color de fondo
@@ -310,7 +310,7 @@ public class VentanaPrincipal {
         carrera.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(carrera);
-        newUserPanel.add(centerPanel, BorderLayout.CENTER);
+        newUserPanel.add(centerPanel, BorderLayout.CENTER);*/
 
         //BOTON CAPTURA TODA LA INFO
         CustomButton confirmButton = new CustomButton("Registrarse", "#119A26");
@@ -323,10 +323,9 @@ public class VentanaPrincipal {
                 char[] passwordConfirm = contrasenhaConfirmar.getPassword();
                 String name = nombre.getText();
                 String surname = apellido.getText();
-                String career = carrera.getText();
 
                 if (!Student.mailInUse(email) && Arrays.equals(password, passwordConfirm) && Objects.equals(email, emailConfirm)) {
-                    Student.agregarEstudiante(new Student(name,surname,email,password,career));
+                    Student.agregarEstudiante(new Student(name,surname,email,password));
                     cardLayout.show(cardPanel, "REGISTRO CONFIRMADO");
 
                 } else {
@@ -377,11 +376,30 @@ public class VentanaPrincipal {
         adminALumnoPanel.setBackground(Color.decode("#292929"));
         return adminALumnoPanel;
     }
+
+    private JPanel createAdminSecurityVerif() {
+        JPanel adminSecurity = new JPanel(new BorderLayout());
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(Color.decode("#292929"));
+        JPasswordField securityPin = new JPasswordField();
+        securityPin.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "Security pin"));
+        securityPin.setMaximumSize(new Dimension(200, 40)); // Limitar la altura del campo
+        securityPin.setBackground(Color.decode("#474747")); // Establecer el color de fondo
+        securityPin.setForeground(Color.WHITE); // Establecer el color del texto
+        securityPin.setAlignmentX(Component.CENTER_ALIGNMENT);
+        securityPin.setAlignmentY(Component.CENTER_ALIGNMENT);  
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(securityPin);
+        adminSecurity.add(centerPanel, BorderLayout.CENTER);
+        return adminSecurity;
+    }
     private JPanel createAdminCarreraPanel() {
-        JPanel adminCarreraPanel = new JPanel();
-        adminCarreraPanel.setLayout(new BorderLayout());
+        JPanel adminCarreraPanel = new JPanel(new BorderLayout());
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(Color.decode("#292929"));
 
-
+        adminCarreraPanel.add(centerPanel, BorderLayout.CENTER);
         return adminCarreraPanel;
     }
     VentanaPrincipal() {
@@ -400,6 +418,7 @@ public class VentanaPrincipal {
         cardPanel.add("ADMIN ALUMNO", createAdminAlumnoPanel());
         cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel());
         cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel());
+        cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
@@ -409,7 +428,7 @@ public class VentanaPrincipal {
         //creacion de alumno estatica
 
         char[] passAlumnoUno = {'a', 'l', 'p', 'e', 'd', 'o', '.', '1', '0'};
-        Student alumnoUno = new Student("Ignacio", "Sanchez", "nachoagusss1@gmail.com",passAlumnoUno, "Lic En sistemas");
+        Student alumnoUno = new Student("Ignacio", "Sanchez", "nachoagusss1@gmail.com",passAlumnoUno);
 
         //materias de lic en sistemas hasta el 6to cuatrimestre
         Subject algebra = new Subject("Algebra", new LinkedList<>());
@@ -462,9 +481,14 @@ public class VentanaPrincipal {
         correlativasDBII.add(8);
         Subject basesDatosII = new Subject("Bases de Datos II", correlativasDBII);
 
-        Subject laboratorioSoftware = new Subject("Laboratorio de Software", new LinkedList<>());
+        LinkedList<Integer> correlativaLabSOft = new LinkedList<>();
+        correlativaLabSOft.add(14);
+        Subject laboratorioSoftware = new Subject("Laboratorio de Software", correlativaLabSOft);
+
         Subject seminarioAspectosLegalesProfesionalesI = new Subject("Seminario de Aspectos Legales y Profesionales I", new LinkedList<>());
-        Subject sistemasOperativos = new Subject("Sistemas Operativos", new LinkedList<>());
+        LinkedList<Integer> correlativasSO = new LinkedList<>();
+        correlativasSO.add(15);
+        Subject sistemasOperativos = new Subject("Sistemas Operativos", correlativasSO);
 
     }
 }

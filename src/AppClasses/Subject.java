@@ -2,6 +2,7 @@ package AppClasses;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Subject {
 
@@ -9,29 +10,31 @@ public class Subject {
     private String nombre;
     private List<Integer> correlativas = new LinkedList<>();
 
-    private static Integer subjectId = 0;
+    private static Integer subjectIdSerial = 0;
+    private Integer subjectId;
 
-    private boolean existeId(Integer id) {
+    public static boolean existeId(Integer id) {
+        for (Subject subject : listaMaterias) {
+            if (Objects.equals(subject.subjectId, id)) {
+                return true;
+            }
+        };
         return false;
     }
 
     public Subject(String nombre, List<Integer> correlativas) {
+        this.nombre = nombre;
+        this.correlativas = correlativas;
+        this.subjectId = subjectIdSerial + 1;
+        listaMaterias.add(this);
+    }
 
-        if (existeId(subjectId)) {
-            this.nombre = nombre;
-            this.correlativas = correlativas;
-            this.subjectId = subjectId + 1;
-            listaMaterias.add(this);
-        } else {
-            System.out.println("Id repetido");
+    public static Subject getSubjectById(Integer subjectId) {
+        for (Subject subject : listaMaterias) {
+            if (Objects.equals(subject.subjectId, subjectId)) {
+                return subject;
+            }
         }
-
+        return null;
     }
-
-    public Integer getSubjectId() {
-        return subjectId;
-    }
-
-
-
 }

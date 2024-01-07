@@ -7,16 +7,15 @@ import java.util.Objects;
 
 public class Student {
     private static List<Student> listaEstudiantes = new ArrayList<Student>();
-    private String nombre, apellido, mail,  carrera;
+    private String nombre, apellido, mail;
     private char[] contrasenha;
 
 
-    public Student(String nombre, String apellido, String mail, char[] contrasenha, String carrera) {
+    public Student(String nombre, String apellido, String mail, char[] contrasenha) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
         this.contrasenha = contrasenha;
-        this.carrera = carrera;
 
         Student.agregarEstudiante(this);
     }
@@ -50,9 +49,7 @@ public class Student {
         return mail;
     }
 
-    public String getCarrera() {
-        return carrera;
-    }
+
 
     public static boolean mailInUse(String mail) {
         for (Student student : listaEstudiantes) {
