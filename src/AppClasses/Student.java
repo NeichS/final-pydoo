@@ -1,14 +1,14 @@
 package AppClasses;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Student {
     private static List<Student> listaEstudiantes = new ArrayList<Student>();
     private String nombre, apellido, mail;
     private char[] contrasenha;
+    private LinkedList<Subject> materiasAprobadas = new LinkedList<>();
+    private LinkedList<Subject> cursadasAprobadas = new LinkedList<>();
+
 
 
     public Student(String nombre, String apellido, String mail, char[] contrasenha) {
@@ -58,6 +58,25 @@ public class Student {
             }
         }
         return false;
+    }
+
+    public boolean correlativasCheck(Subject materia){
+        for (Integer subjectId : materia.getCorrelativas())
+            if (!materiasAprobadas.contains(Subject.getSubjectById(subjectId))) {
+                return false;
+            }
+        return true;
+    }
+    public void addMateriaAprobada(Subject materia) {
+        if (correlativasCheck(materia)) {
+            materiasAprobadas.add(materia);
+        } else {
+            System.out.println("No cumple con las correlativas para aprobar la materia " + materia);
+        }
+    }
+
+    public void addCursadaAprobada(Subject materia) {
+        cursadasAprobadas.add(materia);
     }
 
 }

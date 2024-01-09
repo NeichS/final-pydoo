@@ -6,9 +6,9 @@ import java.util.Objects;
 
 public class Subject {
 
-    private static List<Subject> listaMaterias = new LinkedList<>(); //lista de materias que existen
+    public static List<Subject> listaMaterias = new LinkedList<>(); //lista de materias que existen
     private String nombre;
-    private List<Integer> correlativas = new LinkedList<>();
+    private LinkedList<Integer> correlativas;
 
     private static Integer subjectIdSerial = 0;
     private Integer subjectId;
@@ -22,10 +22,11 @@ public class Subject {
         return false;
     }
 
-    public Subject(String nombre, List<Integer> correlativas) {
+    public Subject(String nombre, LinkedList<Integer> correlativas) {
         this.nombre = nombre;
         this.correlativas = correlativas;
         this.subjectId = subjectIdSerial + 1;
+        subjectIdSerial++;
         listaMaterias.add(this);
     }
 
@@ -36,5 +37,17 @@ public class Subject {
             }
         }
         return null;
+    }
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
+
+    public LinkedList<Integer> getCorrelativas() {
+        return correlativas;
+    }
+
+    public Integer getSubjectId() {
+        return  subjectId;
     }
 }

@@ -28,12 +28,12 @@ public class CustomButton extends JButton {
         }
     }
 
-    CustomButton(String buttonText, String hexaColor) {
+    CustomButton(String buttonText, String hexaColor, Integer maxSize) {
         super(buttonText);
 
-        setPreferredSize(new Dimension(110, 35));
-        setMinimumSize(new Dimension(110, 35));
-        setMaximumSize(new Dimension(110, 35));
+        setPreferredSize(new Dimension(maxSize, 35));
+        setMinimumSize(new Dimension(maxSize, 35));
+        setMaximumSize(new Dimension(maxSize, 35));
 
         setBorderPainted(false);
         setBorder(new RoundBorder(15));

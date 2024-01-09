@@ -1,17 +1,18 @@
 package Swing;
 
+import AppClasses.Career;
 import AppClasses.Student;
+import AppClasses.StudyProgram;
 import AppClasses.Subject;
 import Swing.CustomButton;
 
 import javax.swing.*;
+import javax.swing.text.html.CSS;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class VentanaPrincipal {
     private CardLayout cardLayout;
@@ -65,14 +66,14 @@ public class VentanaPrincipal {
         panelCentro.setBackground(Color.decode("#292929"));
         JPanel panelCentroBajo = new JPanel();
 
-        CustomButton botonAdmin = new CustomButton("Admin", "#474747");
+        CustomButton botonAdmin = new CustomButton("Admin", "#474747", 110);
         botonAdmin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "ADMIN SECURITY VERIFICATION");
             }
         });
-        CustomButton botonAlumno = new CustomButton("Soy Alumno", "#474747");
+        CustomButton botonAlumno = new CustomButton("Soy Alumno", "#474747", 110);
         botonAlumno.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,7 +125,7 @@ public class VentanaPrincipal {
         rightPanel.setBackground(Color.decode("#292929"));
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
-        CustomButton atras = new CustomButton("Volver", "#116A9A");
+        CustomButton atras = new CustomButton("Volver", "#116A9A", 110);
         atras.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,7 +171,7 @@ public class VentanaPrincipal {
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(passwordField);
 
-        CustomButton register = new CustomButton("Registrarse", "#474747");
+        CustomButton register = new CustomButton("Registrarse", "#474747", 110);
         register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -181,7 +182,7 @@ public class VentanaPrincipal {
         register.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(register);
 
-        CustomButton confirmButton = new CustomButton("Confirmar", "#119A26");
+        CustomButton confirmButton = new CustomButton("Confirmar", "#119A26", 110);
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -189,7 +190,7 @@ public class VentanaPrincipal {
                 char[] password = passwordField.getPassword();
 
                 if (Student.confirmarIngreso(email, password)) {
-                    cardLayout.show(cardPanel, "ADMIN ALUMNO");
+                    cardLayout.show(cardPanel, "MENU ALUMNO");
                 } else {
                     JLabel deniedMessage = new JLabel("Mail o contraseña incorrectos");
 
@@ -215,7 +216,7 @@ public class VentanaPrincipal {
         newUserPanel.add(topPanel, BorderLayout.NORTH);
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
-        CustomButton atras = new CustomButton("Volver","#116A94");
+        CustomButton atras = new CustomButton("Volver","#116A94", 110);
         atras.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -313,7 +314,7 @@ public class VentanaPrincipal {
         newUserPanel.add(centerPanel, BorderLayout.CENTER);*/
 
         //BOTON CAPTURA TODA LA INFO
-        CustomButton confirmButton = new CustomButton("Registrarse", "#119A26");
+        CustomButton confirmButton = new CustomButton("Registrarse", "#119A26", 110);
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -356,7 +357,7 @@ public class VentanaPrincipal {
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(registerSuccessfull);
         confirmacionRegistro.add(centerPanel);
-        CustomButton volverMenu = new CustomButton("Menu", "#119A26");
+        CustomButton volverMenu = new CustomButton("Menu", "#119A26", 110);
         volverMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -371,17 +372,72 @@ public class VentanaPrincipal {
         return  confirmacionRegistro;
     }
 
-    private  JPanel createAdminAlumnoPanel() {
-        JPanel adminALumnoPanel = new JPanel();
+    private  JPanel createMenuAlumnoPanel() {
+        JPanel adminALumnoPanel = new JPanel(new BorderLayout());
         adminALumnoPanel.setBackground(Color.decode("#292929"));
+        JPanel topPanel = customPanelTop("Bienvenido alumno");
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(Color.decode("#292929"));
+        centerPanel.add(Box.createVerticalStrut(100));
+
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+        CustomButton volver = new CustomButton("Volver", "#116A9A", 110);
+        volver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "MENU");
+            }
+        });
+        leftPanel.add(volver);
+
+        //center panel buttons
+        CustomButton signCareer = new CustomButton("Inscripcion carrera", "#494949", 180);
+
+        signCareer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "INSCRIPCION MATERIA");
+            }
+        });
+
+        centerPanel.add(signCareer);
+        centerPanel.add(Box.createVerticalStrut(10));
+        signCareer.setAlignmentX(Component.CENTER_ALIGNMENT);
+        CustomButton signSubject = new CustomButton("Inscripcion materia", "#494949", 180);
+        centerPanel.add(signSubject);
+        centerPanel.add(Box.createVerticalStrut(10));
+        signSubject.setAlignmentX(Component.CENTER_ALIGNMENT);
+        CustomButton viewCareerProgress = new CustomButton("Progreso carrera", "#494949", 180);
+        centerPanel.add(viewCareerProgress);
+        centerPanel.add(Box.createVerticalStrut(10));
+        viewCareerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
+        adminALumnoPanel.add(leftPanel, BorderLayout.WEST);
+        adminALumnoPanel.add(centerPanel, BorderLayout.CENTER);
+        adminALumnoPanel.add(topPanel, BorderLayout.NORTH);
         return adminALumnoPanel;
     }
 
     private JPanel createAdminSecurityVerif() {
         JPanel adminSecurity = new JPanel(new BorderLayout());
         JPanel centerPanel = new JPanel();
+        JPanel topPanel = customPanelTop("Ingresar Admin");
+        adminSecurity.add(topPanel, BorderLayout.NORTH);
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(Color.decode("#292929"));
+        centerPanel.add(Box.createVerticalStrut(150));
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+        CustomButton volver = new CustomButton("Volver", "#116A9A", 110);
+        volver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "MENU");
+            }
+        });
+        leftPanel.add(volver);
         JPasswordField securityPin = new JPasswordField();
         securityPin.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "Security pin"));
         securityPin.setMaximumSize(new Dimension(200, 40)); // Limitar la altura del campo
@@ -391,16 +447,64 @@ public class VentanaPrincipal {
         securityPin.setAlignmentY(Component.CENTER_ALIGNMENT);  
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(securityPin);
+
+        CustomButton confirmButton = new CustomButton("Ingresar", "#119A26", 110);
+        confirmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                char[] pin = securityPin.getPassword();
+                char[] key = {'1','2','3','4'};
+
+                if (Arrays.equals(pin,key)) {
+                    cardLayout.show(cardPanel, "ADMIN CARRERAS");
+                } else {
+                    JLabel errorMessage = new JLabel("Contraseña incorrecta");
+                    errorMessage.setForeground(Color.red);
+                    errorMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    centerPanel.add(Box.createVerticalStrut(10));
+                    centerPanel.add(errorMessage);
+                }
+            }
+        });
+        confirmButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(confirmButton);
+        adminSecurity.add(leftPanel, BorderLayout.WEST);
         adminSecurity.add(centerPanel, BorderLayout.CENTER);
         return adminSecurity;
     }
     private JPanel createAdminCarreraPanel() {
         JPanel adminCarreraPanel = new JPanel(new BorderLayout());
+        JPanel topPanel = customPanelTop("Administracion");
+        adminCarreraPanel.add(topPanel, BorderLayout.WEST);
+        CustomButton salir = new CustomButton("Salir", "#116A9A", 110);
+        salir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "MENU");
+            }
+        });
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+
+        //PANEL CENTRAL VA A SER GIGANTE
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(Color.decode("#292929"));
 
+
+
+
+        leftPanel.add(salir);
+        adminCarreraPanel.add(leftPanel, BorderLayout.WEST);
+        adminCarreraPanel.add(topPanel, BorderLayout.NORTH);
         adminCarreraPanel.add(centerPanel, BorderLayout.CENTER);
         return adminCarreraPanel;
+    }
+
+    public JPanel createInscripcionMateriaPanel() {
+        JPanel inscripcionPanel = new JPanel();
+
+        return inscripcionPanel;
     }
     VentanaPrincipal() {
         JFrame ventana = new JFrame("Administracion");
@@ -415,10 +519,11 @@ public class VentanaPrincipal {
         cardPanel.add("MENU", createMenuPanel());
         cardPanel.add("REGISTRO", createRegisterPanel());
         cardPanel.add("NEW USER", createNewUserPanel());
-        cardPanel.add("ADMIN ALUMNO", createAdminAlumnoPanel());
+        cardPanel.add("MENU ALUMNO", createMenuAlumnoPanel());
         cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel());
         cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel());
         cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());
+        cardPanel.add("INSCRIPCION MATERIA", createInscripcionMateriaPanel());
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
@@ -434,19 +539,31 @@ public class VentanaPrincipal {
         Subject algebra = new Subject("Algebra", new LinkedList<>());
         Subject analisisMatematico = new Subject("Análisis Matemático", new LinkedList<>());
         Subject elementosLogicaMatematicaDiscreta = new Subject("Elementos de Lógica y Matemática Discreta", new LinkedList<>());
-        Subject algoritmicaProgramacionI = new Subject("Algorítmica y Programación I", new LinkedList<>());
 
+        LinkedList<Subject> primerCuatrimestre = new LinkedList<>();
+        primerCuatrimestre.add(algebra);
+        primerCuatrimestre.add(analisisMatematico);
+        primerCuatrimestre.add(elementosLogicaMatematicaDiscreta);
+
+        Subject algoritmicaProgramacionI = new Subject("Algorítmica y Programación I", new LinkedList<>());
         LinkedList<Integer> correlativasArqui= new LinkedList<>();
         correlativasArqui.add(3);
         correlativasArqui.add(4);
         Subject arquitecturaComputadoras = new Subject("Arquitectura de Computadoras", correlativasArqui);
+
 
         LinkedList<Integer> correlativasEstadistica = new LinkedList<>();
         correlativasEstadistica.add(1);
         correlativasEstadistica.add(2);
         Subject estadistica = new Subject("Estadística", correlativasEstadistica);
 
+        LinkedList<Subject> segundoCuatrimestre = new LinkedList<>();
+        segundoCuatrimestre.add(algoritmicaProgramacionI);
+        segundoCuatrimestre.add(arquitecturaComputadoras);
+        segundoCuatrimestre.add(estadistica);
+
         Subject sistemasOrganizaciones = new Subject("Sistemas y Organizaciones", new LinkedList<>());
+
 
         LinkedList<Integer> correlativasBD = new LinkedList<>();
         correlativasBD.add(1);
@@ -455,10 +572,14 @@ public class VentanaPrincipal {
 
         Subject ingenieriaSoftwareI = new Subject("Ingeniería de Software I", new LinkedList<>());
 
+        LinkedList<Subject> tercerCuatrimestre = new LinkedList<>();
+        tercerCuatrimestre.add(sistemasOrganizaciones);
+        tercerCuatrimestre.add(basesDatosI);
+        tercerCuatrimestre.add(ingenieriaSoftwareI);
+
         LinkedList<Integer> correlativasPydoo = new LinkedList<>();
         correlativasPydoo.add(4);
         Subject programacionDisenoOrientadoObjetos = new Subject("Programación y Diseño Orientado a Objetos", correlativasPydoo);
-
         LinkedList<Integer> correlativasFTI = new LinkedList<>();
         correlativasFTI.add(9);
         Subject fundamentosTeoricosInformatica = new Subject("Fundamentos Teóricos de Informática", correlativasFTI);
@@ -466,6 +587,11 @@ public class VentanaPrincipal {
         LinkedList<Integer> correlativasIngII = new LinkedList<>();
         correlativasIngII.add(9);
         Subject ingenieriaSoftwareII = new Subject("Ingeniería de Software II", correlativasIngII);
+
+        LinkedList<Subject> cuartoCuatrimestre = new LinkedList<>();
+        cuartoCuatrimestre.add(programacionDisenoOrientadoObjetos);
+        cuartoCuatrimestre.add(fundamentosTeoricosInformatica);
+        cuartoCuatrimestre.add(ingenieriaSoftwareII);
 
         LinkedList<Integer> correlativasIntrConc = new LinkedList<>();
         correlativasIntrConc.add(4);
@@ -481,14 +607,43 @@ public class VentanaPrincipal {
         correlativasDBII.add(8);
         Subject basesDatosII = new Subject("Bases de Datos II", correlativasDBII);
 
+        LinkedList<Subject> quintoCuatrimestre = new LinkedList<>();
+        quintoCuatrimestre.add(introduccionConcurrencia);
+        quintoCuatrimestre.add(laboratorioProgramacionLenguajes);
+        quintoCuatrimestre.add(basesDatosII);
+
         LinkedList<Integer> correlativaLabSOft = new LinkedList<>();
         correlativaLabSOft.add(14);
         Subject laboratorioSoftware = new Subject("Laboratorio de Software", correlativaLabSOft);
-
         Subject seminarioAspectosLegalesProfesionalesI = new Subject("Seminario de Aspectos Legales y Profesionales I", new LinkedList<>());
+
         LinkedList<Integer> correlativasSO = new LinkedList<>();
         correlativasSO.add(15);
         Subject sistemasOperativos = new Subject("Sistemas Operativos", correlativasSO);
+
+        LinkedList<Subject> sextoCuatrimestre = new LinkedList<>();
+        sextoCuatrimestre.add(laboratorioSoftware);
+        sextoCuatrimestre.add(seminarioAspectosLegalesProfesionalesI);
+        sextoCuatrimestre.add(sistemasOperativos);
+
+        Map<Integer, LinkedList<Subject>> programaSistemas = new HashMap<>();
+        programaSistemas.put(1, primerCuatrimestre);
+        programaSistemas.put(2, segundoCuatrimestre);
+        programaSistemas.put(3, tercerCuatrimestre);
+        programaSistemas.put(4, cuartoCuatrimestre);
+        programaSistemas.put(5, quintoCuatrimestre);
+        programaSistemas.put(6, sextoCuatrimestre);
+
+        StudyProgram sistemasPrograma = new StudyProgram('A', programaSistemas);
+
+        Career LicSistemas = new Career("Licenciatura en Sistemas", sistemasPrograma);
+
+        alumnoUno.addMateriaAprobada(algebra);
+        alumnoUno.addMateriaAprobada(analisisMatematico);
+        alumnoUno.addMateriaAprobada(elementosLogicaMatematicaDiscreta);
+        alumnoUno.addMateriaAprobada(estadistica);
+        alumnoUno.addMateriaAprobada(algoritmicaProgramacionI);
+
 
     }
 }
