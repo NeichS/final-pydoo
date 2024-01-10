@@ -17,6 +17,9 @@ import java.util.List;
 public class VentanaPrincipal {
     private CardLayout cardLayout;
     private JPanel cardPanel;
+
+    private Student alumnoCliente;
+
     static JPanel customPanelTop(String tittle) {
         JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelTop.setBackground(Color.decode("#474747"));
@@ -59,7 +62,7 @@ public class VentanaPrincipal {
         return new JLabel(scaledIcon);
     }
 
-    private JPanel createMenuPanel(){
+    private JPanel createMenuPanel() {
         JPanel menuPanel = new JPanel(new BorderLayout());
 
         JPanel panelCentro = new JPanel(new BorderLayout());
@@ -117,7 +120,7 @@ public class VentanaPrincipal {
         return menuPanel;
     }
 
-    private JPanel createRegisterPanel(){
+    private JPanel createRegisterPanel() {
         JPanel registroPanel = new JPanel(new BorderLayout());
 
         JPanel topPanel = customPanelTop("Bienvenido Alumno");
@@ -160,8 +163,6 @@ public class VentanaPrincipal {
         centerPanel.add(emailField);
         centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
-
         JPasswordField passwordField = new JPasswordField();
         passwordField.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "password"));
         passwordField.setMaximumSize(new Dimension(200, 40)); // Limitar la altura del campo
@@ -190,6 +191,7 @@ public class VentanaPrincipal {
                 char[] password = passwordField.getPassword();
 
                 if (Student.confirmarIngreso(email, password)) {
+                    alumnoCliente = Student.getAlumnoByMail(email);
                     cardLayout.show(cardPanel, "MENU ALUMNO");
                 } else {
                     JLabel deniedMessage = new JLabel("Mail o contraseña incorrectos");
@@ -216,7 +218,7 @@ public class VentanaPrincipal {
         newUserPanel.add(topPanel, BorderLayout.NORTH);
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
-        CustomButton atras = new CustomButton("Volver","#116A94", 110);
+        CustomButton atras = new CustomButton("Volver", "#116A94", 110);
         atras.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -326,7 +328,7 @@ public class VentanaPrincipal {
                 String surname = apellido.getText();
 
                 if (!Student.mailInUse(email) && Arrays.equals(password, passwordConfirm) && Objects.equals(email, emailConfirm)) {
-                    Student.agregarEstudiante(new Student(name,surname,email,password));
+                    Student.agregarEstudiante(new Student(name, surname, email, password));
                     cardLayout.show(cardPanel, "REGISTRO CONFIRMADO");
 
                 } else {
@@ -369,13 +371,13 @@ public class VentanaPrincipal {
         centerPanel.add(volverMenu);
         confirmacionRegistro.add(centerPanel);
 
-        return  confirmacionRegistro;
+        return confirmacionRegistro;
     }
 
-    private  JPanel createMenuAlumnoPanel() {
+    private JPanel createMenuAlumnoPanel(Student alumnoCliente) {
         JPanel adminALumnoPanel = new JPanel(new BorderLayout());
         adminALumnoPanel.setBackground(Color.decode("#292929"));
-        JPanel topPanel = customPanelTop("Bienvenido alumno");
+        JPanel topPanel = customPanelTop("Bienvenido " + (alumnoCliente != null ? alumnoCliente.getNombre() : "alumno"));
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -399,7 +401,7 @@ public class VentanaPrincipal {
         signCareer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "INSCRIPCION MATERIA");
+                cardLayout.show(cardPanel, "INSCRIPCION CARRERA");
             }
         });
 
@@ -407,10 +409,22 @@ public class VentanaPrincipal {
         centerPanel.add(Box.createVerticalStrut(10));
         signCareer.setAlignmentX(Component.CENTER_ALIGNMENT);
         CustomButton signSubject = new CustomButton("Inscripcion materia", "#494949", 180);
+        signSubject.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "INSCRIPCION MATERIA");
+            }
+        });
         centerPanel.add(signSubject);
         centerPanel.add(Box.createVerticalStrut(10));
         signSubject.setAlignmentX(Component.CENTER_ALIGNMENT);
         CustomButton viewCareerProgress = new CustomButton("Progreso carrera", "#494949", 180);
+        viewCareerProgress.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "PROGRESO CARRERA");
+            }
+        });
         centerPanel.add(viewCareerProgress);
         centerPanel.add(Box.createVerticalStrut(10));
         viewCareerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -444,7 +458,7 @@ public class VentanaPrincipal {
         securityPin.setBackground(Color.decode("#474747")); // Establecer el color de fondo
         securityPin.setForeground(Color.WHITE); // Establecer el color del texto
         securityPin.setAlignmentX(Component.CENTER_ALIGNMENT);
-        securityPin.setAlignmentY(Component.CENTER_ALIGNMENT);  
+        securityPin.setAlignmentY(Component.CENTER_ALIGNMENT);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(securityPin);
 
@@ -453,9 +467,9 @@ public class VentanaPrincipal {
             @Override
             public void actionPerformed(ActionEvent e) {
                 char[] pin = securityPin.getPassword();
-                char[] key = {'1','2','3','4'};
+                char[] key = {'1', '2', '3', '4'};
 
-                if (Arrays.equals(pin,key)) {
+                if (Arrays.equals(pin, key)) {
                     cardLayout.show(cardPanel, "ADMIN CARRERAS");
                 } else {
                     JLabel errorMessage = new JLabel("Contraseña incorrecta");
@@ -473,6 +487,7 @@ public class VentanaPrincipal {
         adminSecurity.add(centerPanel, BorderLayout.CENTER);
         return adminSecurity;
     }
+
     private JPanel createAdminCarreraPanel() {
         JPanel adminCarreraPanel = new JPanel(new BorderLayout());
         JPanel topPanel = customPanelTop("Administracion");
@@ -491,9 +506,6 @@ public class VentanaPrincipal {
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(Color.decode("#292929"));
 
-
-
-
         leftPanel.add(salir);
         adminCarreraPanel.add(leftPanel, BorderLayout.WEST);
         adminCarreraPanel.add(topPanel, BorderLayout.NORTH);
@@ -501,11 +513,21 @@ public class VentanaPrincipal {
         return adminCarreraPanel;
     }
 
-    public JPanel createInscripcionMateriaPanel() {
+    public JPanel createInscripcionMateriaPanel(Student alumnoCliente) {
         JPanel inscripcionPanel = new JPanel();
-
         return inscripcionPanel;
     }
+
+    public JPanel createInscripcionCarreraPanel(Student alumnoCliente) {
+        JPanel inscripcionCarreraPanel = new JPanel();
+        return inscripcionCarreraPanel;
+    }
+
+    public JPanel createProgresoPanel(Student alumnoCliente) {
+        JPanel progreoPanel = new JPanel();
+        return progreoPanel;
+    }
+
     VentanaPrincipal() {
         JFrame ventana = new JFrame("Administracion");
         ventana.setSize(700, 600);
@@ -519,131 +541,18 @@ public class VentanaPrincipal {
         cardPanel.add("MENU", createMenuPanel());
         cardPanel.add("REGISTRO", createRegisterPanel());
         cardPanel.add("NEW USER", createNewUserPanel());
-        cardPanel.add("MENU ALUMNO", createMenuAlumnoPanel());
+        cardPanel.add("MENU ALUMNO", createMenuAlumnoPanel(alumnoCliente));
         cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel());
         cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel());
         cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());
-        cardPanel.add("INSCRIPCION MATERIA", createInscripcionMateriaPanel());
+        cardPanel.add("INSCRIPCION MATERIA", createInscripcionMateriaPanel(alumnoCliente));
+        cardPanel.add("INSCRIPCION CARRERA", createInscripcionCarreraPanel(alumnoCliente));
+        cardPanel.add("PROGRESO CARRERA", createProgresoPanel(alumnoCliente));
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
 
         ventana.setVisible(true);
-
-        //creacion de alumno estatica
-
-        char[] passAlumnoUno = {'a', 'l', 'p', 'e', 'd', 'o', '.', '1', '0'};
-        Student alumnoUno = new Student("Ignacio", "Sanchez", "nachoagusss1@gmail.com",passAlumnoUno);
-
-        //materias de lic en sistemas hasta el 6to cuatrimestre
-        Subject algebra = new Subject("Algebra", new LinkedList<>());
-        Subject analisisMatematico = new Subject("Análisis Matemático", new LinkedList<>());
-        Subject elementosLogicaMatematicaDiscreta = new Subject("Elementos de Lógica y Matemática Discreta", new LinkedList<>());
-
-        LinkedList<Subject> primerCuatrimestre = new LinkedList<>();
-        primerCuatrimestre.add(algebra);
-        primerCuatrimestre.add(analisisMatematico);
-        primerCuatrimestre.add(elementosLogicaMatematicaDiscreta);
-
-        Subject algoritmicaProgramacionI = new Subject("Algorítmica y Programación I", new LinkedList<>());
-        LinkedList<Integer> correlativasArqui= new LinkedList<>();
-        correlativasArqui.add(3);
-        correlativasArqui.add(4);
-        Subject arquitecturaComputadoras = new Subject("Arquitectura de Computadoras", correlativasArqui);
-
-
-        LinkedList<Integer> correlativasEstadistica = new LinkedList<>();
-        correlativasEstadistica.add(1);
-        correlativasEstadistica.add(2);
-        Subject estadistica = new Subject("Estadística", correlativasEstadistica);
-
-        LinkedList<Subject> segundoCuatrimestre = new LinkedList<>();
-        segundoCuatrimestre.add(algoritmicaProgramacionI);
-        segundoCuatrimestre.add(arquitecturaComputadoras);
-        segundoCuatrimestre.add(estadistica);
-
-        Subject sistemasOrganizaciones = new Subject("Sistemas y Organizaciones", new LinkedList<>());
-
-
-        LinkedList<Integer> correlativasBD = new LinkedList<>();
-        correlativasBD.add(1);
-        correlativasBD.add(4);
-        Subject basesDatosI = new Subject("Bases de Datos I", correlativasBD);
-
-        Subject ingenieriaSoftwareI = new Subject("Ingeniería de Software I", new LinkedList<>());
-
-        LinkedList<Subject> tercerCuatrimestre = new LinkedList<>();
-        tercerCuatrimestre.add(sistemasOrganizaciones);
-        tercerCuatrimestre.add(basesDatosI);
-        tercerCuatrimestre.add(ingenieriaSoftwareI);
-
-        LinkedList<Integer> correlativasPydoo = new LinkedList<>();
-        correlativasPydoo.add(4);
-        Subject programacionDisenoOrientadoObjetos = new Subject("Programación y Diseño Orientado a Objetos", correlativasPydoo);
-        LinkedList<Integer> correlativasFTI = new LinkedList<>();
-        correlativasFTI.add(9);
-        Subject fundamentosTeoricosInformatica = new Subject("Fundamentos Teóricos de Informática", correlativasFTI);
-
-        LinkedList<Integer> correlativasIngII = new LinkedList<>();
-        correlativasIngII.add(9);
-        Subject ingenieriaSoftwareII = new Subject("Ingeniería de Software II", correlativasIngII);
-
-        LinkedList<Subject> cuartoCuatrimestre = new LinkedList<>();
-        cuartoCuatrimestre.add(programacionDisenoOrientadoObjetos);
-        cuartoCuatrimestre.add(fundamentosTeoricosInformatica);
-        cuartoCuatrimestre.add(ingenieriaSoftwareII);
-
-        LinkedList<Integer> correlativasIntrConc = new LinkedList<>();
-        correlativasIntrConc.add(4);
-        correlativasIntrConc.add(10);
-        Subject introduccionConcurrencia = new Subject("Introducción a la Concurrencia", correlativasIntrConc);
-
-        LinkedList<Integer> correlativasLabProg = new LinkedList<>();
-        correlativasLabProg.add(4);
-        correlativasLabProg.add(10);
-        Subject laboratorioProgramacionLenguajes = new Subject("Laboratorio de Programación y Lenguajes", correlativasLabProg);
-
-        LinkedList<Integer> correlativasDBII = new LinkedList<>();
-        correlativasDBII.add(8);
-        Subject basesDatosII = new Subject("Bases de Datos II", correlativasDBII);
-
-        LinkedList<Subject> quintoCuatrimestre = new LinkedList<>();
-        quintoCuatrimestre.add(introduccionConcurrencia);
-        quintoCuatrimestre.add(laboratorioProgramacionLenguajes);
-        quintoCuatrimestre.add(basesDatosII);
-
-        LinkedList<Integer> correlativaLabSOft = new LinkedList<>();
-        correlativaLabSOft.add(14);
-        Subject laboratorioSoftware = new Subject("Laboratorio de Software", correlativaLabSOft);
-        Subject seminarioAspectosLegalesProfesionalesI = new Subject("Seminario de Aspectos Legales y Profesionales I", new LinkedList<>());
-
-        LinkedList<Integer> correlativasSO = new LinkedList<>();
-        correlativasSO.add(15);
-        Subject sistemasOperativos = new Subject("Sistemas Operativos", correlativasSO);
-
-        LinkedList<Subject> sextoCuatrimestre = new LinkedList<>();
-        sextoCuatrimestre.add(laboratorioSoftware);
-        sextoCuatrimestre.add(seminarioAspectosLegalesProfesionalesI);
-        sextoCuatrimestre.add(sistemasOperativos);
-
-        Map<Integer, LinkedList<Subject>> programaSistemas = new HashMap<>();
-        programaSistemas.put(1, primerCuatrimestre);
-        programaSistemas.put(2, segundoCuatrimestre);
-        programaSistemas.put(3, tercerCuatrimestre);
-        programaSistemas.put(4, cuartoCuatrimestre);
-        programaSistemas.put(5, quintoCuatrimestre);
-        programaSistemas.put(6, sextoCuatrimestre);
-
-        StudyProgram sistemasPrograma = new StudyProgram('A', programaSistemas);
-
-        Career LicSistemas = new Career("Licenciatura en Sistemas", sistemasPrograma);
-
-        alumnoUno.addMateriaAprobada(algebra);
-        alumnoUno.addMateriaAprobada(analisisMatematico);
-        alumnoUno.addMateriaAprobada(elementosLogicaMatematicaDiscreta);
-        alumnoUno.addMateriaAprobada(estadistica);
-        alumnoUno.addMateriaAprobada(algoritmicaProgramacionI);
-
-
     }
 }
+

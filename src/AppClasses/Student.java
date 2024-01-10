@@ -79,5 +79,14 @@ public class Student {
         cursadasAprobadas.add(materia);
     }
 
+    public static Student getAlumnoByMail(String mail) {
+        for (Student student : listaEstudiantes) {
+            if (Objects.equals(student.mail, mail)) {
+                return  student;
+            }
+        }
+        return null;
+    }
+
 }
 
