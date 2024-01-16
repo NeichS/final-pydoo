@@ -1,24 +1,19 @@
 package Swing;
-
-import AppClasses.Career;
 import AppClasses.Student;
-import AppClasses.StudyProgram;
-import AppClasses.Subject;
-import Swing.CustomButton;
-
 import javax.swing.*;
-import javax.swing.text.html.CSS;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
-import java.util.List;
 
 public class VentanaPrincipal {
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
+    public static CardLayout cardLayout;
+    public static JPanel cardPanel;
 
     private Student alumnoCliente;
+
+    public VentanaPrincipal(CardLayout cardLayout, JPanel cardPanel) {
+    }
 
     static JPanel customPanelTop(String tittle) {
         JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -32,7 +27,6 @@ public class VentanaPrincipal {
         panelTop.add(titulo);
         return panelTop;
     }
-
     static JLabel escalarImagen(ImageIcon originalIcon) {
         int originalWidth = originalIcon.getIconWidth();
         int originalHeight = originalIcon.getIconHeight();
@@ -120,7 +114,7 @@ public class VentanaPrincipal {
         return menuPanel;
     }
 
-    private JPanel createRegisterPanel() {
+    private JPanel createRegisterPanel(PanelAlumno panelAlumno) {
         JPanel registroPanel = new JPanel(new BorderLayout());
 
         JPanel topPanel = customPanelTop("Bienvenido Alumno");
@@ -192,6 +186,9 @@ public class VentanaPrincipal {
 
                 if (Student.confirmarIngreso(email, password)) {
                     alumnoCliente = Student.getAlumnoByMail(email);
+                    panelAlumno.setAlumnoCliente(alumnoCliente);
+                    registroPanel.setVisible(false);
+                    panelAlumno.createMenuAlumnoPanel();
                     cardLayout.show(cardPanel, "MENU ALUMNO");
                 } else {
                     JLabel deniedMessage = new JLabel("Mail o contraseña incorrectos");
@@ -343,6 +340,8 @@ public class VentanaPrincipal {
         confirmButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(confirmButton);
+
+
         return newUserPanel;
     }
 
@@ -374,65 +373,6 @@ public class VentanaPrincipal {
         return confirmacionRegistro;
     }
 
-    private JPanel createMenuAlumnoPanel(Student alumnoCliente) {
-        JPanel adminALumnoPanel = new JPanel(new BorderLayout());
-        adminALumnoPanel.setBackground(Color.decode("#292929"));
-        JPanel topPanel = customPanelTop("Bienvenido " + (alumnoCliente != null ? alumnoCliente.getNombre() : "alumno"));
-
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setBackground(Color.decode("#292929"));
-        centerPanel.add(Box.createVerticalStrut(100));
-
-        JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(Color.decode("#292929"));
-        CustomButton volver = new CustomButton("Volver", "#116A9A", 110);
-        volver.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "MENU");
-            }
-        });
-        leftPanel.add(volver);
-
-        //center panel buttons
-        CustomButton signCareer = new CustomButton("Inscripcion carrera", "#494949", 180);
-
-        signCareer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "INSCRIPCION CARRERA");
-            }
-        });
-
-        centerPanel.add(signCareer);
-        centerPanel.add(Box.createVerticalStrut(10));
-        signCareer.setAlignmentX(Component.CENTER_ALIGNMENT);
-        CustomButton signSubject = new CustomButton("Inscripcion materia", "#494949", 180);
-        signSubject.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "INSCRIPCION MATERIA");
-            }
-        });
-        centerPanel.add(signSubject);
-        centerPanel.add(Box.createVerticalStrut(10));
-        signSubject.setAlignmentX(Component.CENTER_ALIGNMENT);
-        CustomButton viewCareerProgress = new CustomButton("Progreso carrera", "#494949", 180);
-        viewCareerProgress.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "PROGRESO CARRERA");
-            }
-        });
-        centerPanel.add(viewCareerProgress);
-        centerPanel.add(Box.createVerticalStrut(10));
-        viewCareerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
-        adminALumnoPanel.add(leftPanel, BorderLayout.WEST);
-        adminALumnoPanel.add(centerPanel, BorderLayout.CENTER);
-        adminALumnoPanel.add(topPanel, BorderLayout.NORTH);
-        return adminALumnoPanel;
-    }
 
     private JPanel createAdminSecurityVerif() {
         JPanel adminSecurity = new JPanel(new BorderLayout());
@@ -513,22 +453,8 @@ public class VentanaPrincipal {
         return adminCarreraPanel;
     }
 
-    public JPanel createInscripcionMateriaPanel(Student alumnoCliente) {
-        JPanel inscripcionPanel = new JPanel();
-        return inscripcionPanel;
-    }
 
-    public JPanel createInscripcionCarreraPanel(Student alumnoCliente) {
-        JPanel inscripcionCarreraPanel = new JPanel();
-        return inscripcionCarreraPanel;
-    }
-
-    public JPanel createProgresoPanel(Student alumnoCliente) {
-        JPanel progreoPanel = new JPanel();
-        return progreoPanel;
-    }
-
-    VentanaPrincipal() {
+    public VentanaPrincipal() {
         JFrame ventana = new JFrame("Administracion");
         ventana.setSize(700, 600);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -536,23 +462,21 @@ public class VentanaPrincipal {
         // Inicializar el CardLayout y el panel que lo utiliza
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
+        PanelAlumno alumnoPanel = new PanelAlumno(cardLayout, cardPanel);
         // Agregar las vistas al panel que utiliza el CardLayout
         cardPanel.add("MENU", createMenuPanel());
-        cardPanel.add("REGISTRO", createRegisterPanel());
+        cardPanel.add("REGISTRO", createRegisterPanel(alumnoPanel));
         cardPanel.add("NEW USER", createNewUserPanel());
-        cardPanel.add("MENU ALUMNO", createMenuAlumnoPanel(alumnoCliente));
+        cardPanel.add("MENU ALUMNO", alumnoPanel.adminAlumnoPanel);
         cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel());
         cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel());
         cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());
-        cardPanel.add("INSCRIPCION MATERIA", createInscripcionMateriaPanel(alumnoCliente));
-        cardPanel.add("INSCRIPCION CARRERA", createInscripcionCarreraPanel(alumnoCliente));
-        cardPanel.add("PROGRESO CARRERA", createProgresoPanel(alumnoCliente));
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
 
         ventana.setVisible(true);
     }
+
 }
 

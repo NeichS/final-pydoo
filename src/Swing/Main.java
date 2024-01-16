@@ -5,6 +5,7 @@ import AppClasses.Student;
 import AppClasses.StudyProgram;
 import AppClasses.Subject;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -128,6 +129,6 @@ public class Main {
     public static void main(String[] args) {
         inicializar();
         //toda la aplicacion
-        VentanaPrincipal principal = new VentanaPrincipal();
+        SwingUtilities.invokeLater(VentanaPrincipal::new);
     }
 }
