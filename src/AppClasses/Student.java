@@ -9,6 +9,7 @@ public class Student {
     private LinkedList<Subject> materiasAprobadas = new LinkedList<>();
     private LinkedList<Subject> cursadasAprobadas = new LinkedList<>();
 
+    private LinkedList<Career> cursaCarrera = new LinkedList<>();
 
 
     public Student(String nombre, String apellido, String mail, char[] contrasenha) {
@@ -87,6 +88,12 @@ public class Student {
         }
         return null;
     }
+    public LinkedList<Career> getCursaCarrera() {
+        return this.cursaCarrera;
+    }
 
+    public void setCursaCarrera(Career carrera) {
+        cursaCarrera.add(carrera);
+    }
 }
 

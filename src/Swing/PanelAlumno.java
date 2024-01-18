@@ -1,21 +1,23 @@
 package Swing;
 
+import AppClasses.Career;
 import AppClasses.Student;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.cert.CertificateEncodingException;
+import java.util.LinkedList;
 
 import static Swing.VentanaPrincipal.customPanelTop;
 
-public class PanelAlumno extends VentanaPrincipal{
+public class PanelAlumno extends VentanaPrincipal {
     private Student alumnoCliente;
     public JPanel adminAlumnoPanel;
-    public CardLayout cardLayout;
-    public JPanel cardPanel;
-    PanelAlumno(CardLayout cardLayout, JPanel cardPanel) {
-        super(VentanaPrincipal.cardLayout, VentanaPrincipal.cardPanel);
+
+    PanelAlumno(String variable) {
+        super(variable);
         adminAlumnoPanel = new JPanel();
         adminAlumnoPanel.setLayout(new BorderLayout()); // Set layout
         adminAlumnoPanel.setBackground(Color.decode("#292929")); // Set background color
@@ -23,11 +25,11 @@ public class PanelAlumno extends VentanaPrincipal{
         JLabel message = new JLabel("Welcome!"); // Add a welcome message or any default content
         adminAlumnoPanel.add(message, BorderLayout.CENTER);
     }
+
     public JPanel createMenuAlumnoPanel() {
         adminAlumnoPanel.removeAll();
         adminAlumnoPanel.setLayout(new BorderLayout());
         adminAlumnoPanel.setBackground(Color.decode("#292929"));
-        System.out.println(alumnoCliente.getNombre());
         JPanel panelTop = customPanelTop("Bienvenido " + alumnoCliente.getNombre());
         adminAlumnoPanel.add(panelTop, BorderLayout.NORTH);
 
@@ -36,12 +38,24 @@ public class PanelAlumno extends VentanaPrincipal{
         centerPanel.setBackground(Color.decode("#292929"));
         centerPanel.add(Box.createVerticalStrut(100));
 
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+        CustomButton atras = new CustomButton("Volver", "#116A9A", 110);
+        atras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "MENU");
+            }
+        });
+        leftPanel.add(atras);
+
         //center panel buttons
         CustomButton signCareer = new CustomButton("Inscripcion carrera", "#494949", 180);
 
         signCareer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "INSCRIPCION CARRERA");
 
             }
         });
@@ -69,9 +83,8 @@ public class PanelAlumno extends VentanaPrincipal{
         centerPanel.add(viewCareerProgress);
         centerPanel.add(Box.createVerticalStrut(10));
         viewCareerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
+        adminAlumnoPanel.add(leftPanel, BorderLayout.WEST);
         adminAlumnoPanel.add(centerPanel, BorderLayout.CENTER);
-
-        adminAlumnoPanel.setVisible(true);
 
         return adminAlumnoPanel;
     }
@@ -79,11 +92,5 @@ public class PanelAlumno extends VentanaPrincipal{
     public void setAlumnoCliente(Student alumno) {
         this.alumnoCliente = alumno;
     }
-
-    public void update() {
-        this.adminAlumnoPanel.revalidate();
-        this.adminAlumnoPanel.repaint();
-    }
-
-
 }
+

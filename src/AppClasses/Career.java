@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Career {
-    private String nombre;
 
     private static LinkedList<Career> careers = new LinkedList<>();
 
@@ -17,6 +16,23 @@ public class Career {
         this.name = name;
         this.planDeEstudio = planDeEstudio;
         careers.add(this);
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public StudyProgram getPlanDeEstudio() {
+        return this.planDeEstudio;
+    }
+
+    public static LinkedList<Career> getCareers() {
+        return careers;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
 }

@@ -125,6 +125,9 @@ public class Main {
         alumnoUno.addMateriaAprobada(elementosLogicaMatematicaDiscreta);
         alumnoUno.addMateriaAprobada(estadistica);
         alumnoUno.addMateriaAprobada(algoritmicaProgramacionI);
+
+        alumnoUno.setCursaCarrera(LicSistemas);
+        alumnoUno.setCursaCarrera(new Career("Lic en Economia", new StudyProgram('A', new HashMap<>())));
     }
     public static void main(String[] args) {
         inicializar();

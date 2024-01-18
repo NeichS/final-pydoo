@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import java.util.*;
 
 public class VentanaPrincipal {
-    public static CardLayout cardLayout;
-    public static JPanel cardPanel;
-
+    protected static CardLayout cardLayout;
+    protected static JPanel cardPanel;
+    protected static String variable;
     private Student alumnoCliente;
 
-    public VentanaPrincipal(CardLayout cardLayout, JPanel cardPanel) {
+    VentanaPrincipal(String caca) {
+        this.variable = caca;
     }
-
     static JPanel customPanelTop(String tittle) {
         JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelTop.setBackground(Color.decode("#474747"));
@@ -114,7 +114,7 @@ public class VentanaPrincipal {
         return menuPanel;
     }
 
-    private JPanel createRegisterPanel(PanelAlumno panelAlumno) {
+    private JPanel createRegisterPanel(PanelAlumno panelAlumno, InscriptionPanel inscriptionPanel) {
         JPanel registroPanel = new JPanel(new BorderLayout());
 
         JPanel topPanel = customPanelTop("Bienvenido Alumno");
@@ -187,8 +187,12 @@ public class VentanaPrincipal {
                 if (Student.confirmarIngreso(email, password)) {
                     alumnoCliente = Student.getAlumnoByMail(email);
                     panelAlumno.setAlumnoCliente(alumnoCliente);
+                    inscriptionPanel.setAlumnoCliente(alumnoCliente);
                     registroPanel.setVisible(false);
                     panelAlumno.createMenuAlumnoPanel();
+                    inscriptionPanel.createInscriptionPanel();
+                    emailField.setText("");
+                    passwordField.setText("");
                     cardLayout.show(cardPanel, "MENU ALUMNO");
                 } else {
                     JLabel deniedMessage = new JLabel("Mail o contraseña incorrectos");
@@ -442,7 +446,6 @@ public class VentanaPrincipal {
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
 
-        //PANEL CENTRAL VA A SER GIGANTE
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(Color.decode("#292929"));
 
@@ -462,21 +465,22 @@ public class VentanaPrincipal {
         // Inicializar el CardLayout y el panel que lo utiliza
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        PanelAlumno alumnoPanel = new PanelAlumno(cardLayout, cardPanel);
+        PanelAlumno alumnoPanel = new PanelAlumno(variable);
+        InscriptionPanel inscriptionPanel = new InscriptionPanel(variable);
         // Agregar las vistas al panel que utiliza el CardLayout
         cardPanel.add("MENU", createMenuPanel());
-        cardPanel.add("REGISTRO", createRegisterPanel(alumnoPanel));
+        cardPanel.add("REGISTRO", createRegisterPanel(alumnoPanel, inscriptionPanel));
         cardPanel.add("NEW USER", createNewUserPanel());
         cardPanel.add("MENU ALUMNO", alumnoPanel.adminAlumnoPanel);
         cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel());
         cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel());
         cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());
+        cardPanel.add("INSCRIPCION CARRERA", inscriptionPanel.inscriptionPanel);
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
 
         ventana.setVisible(true);
     }
-
 }
 
