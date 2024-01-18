@@ -119,6 +119,7 @@ public class Main {
         StudyProgram sistemasPrograma = new StudyProgram('A', programaSistemas);
 
         Career LicSistemas = new Career("Licenciatura en Sistemas", sistemasPrograma);
+        Career LicEconomia = new Career("Lic en Economia", new StudyProgram('A', new HashMap<>()));
 
         alumnoUno.addMateriaAprobada(algebra);
         alumnoUno.addMateriaAprobada(analisisMatematico);
@@ -127,7 +128,7 @@ public class Main {
         alumnoUno.addMateriaAprobada(algoritmicaProgramacionI);
 
         alumnoUno.setCursaCarrera(LicSistemas);
-        alumnoUno.setCursaCarrera(new Career("Lic en Economia", new StudyProgram('A', new HashMap<>())));
+        //alumnoUno.setCursaCarrera(LicEconomia);
     }
     public static void main(String[] args) {
         inicializar();

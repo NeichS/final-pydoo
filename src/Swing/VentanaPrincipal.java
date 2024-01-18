@@ -476,6 +476,7 @@ public class VentanaPrincipal {
         cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel());
         cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());
         cardPanel.add("INSCRIPCION CARRERA", inscriptionPanel.inscriptionPanel);
+        cardPanel.add("INSCRIPCION MATERIA", inscriptionPanel.createInscriptionMateriaPanel());
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);

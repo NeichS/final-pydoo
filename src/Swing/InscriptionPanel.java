@@ -72,11 +72,10 @@ public class InscriptionPanel extends VentanaPrincipal {
                 } else {
                     alumnoCliente.setCursaCarrera(career);
                     JLabel successMessage = new JLabel("Se a inscripto correctamente");
-                    successMessage.setForeground(Color.decode("##119A26"));
+                    successMessage.setForeground(Color.decode("#119A26"));
                     successMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
                     panel.add(successMessage);
                 }
-
             }
         });
         return boton;
@@ -121,13 +120,25 @@ public class InscriptionPanel extends VentanaPrincipal {
         JPanel panelTop = customPanelTop("Carreras " + alumnoCliente.getNombre());
         inscriptionPanel.add(panelTop, BorderLayout.NORTH);
 
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+        CustomButton atras = new CustomButton("Volver", "#116A94", 110);
+        atras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "MENU ALUMNO");
+            }
+        });
+        leftPanel.add(atras);
         JPanel centerPanel = createCenterPanel();
         JPanel centerTopPanel = createCenterTopPanel();
         centerPanel.add(centerTopPanel, BorderLayout.NORTH);
 
+
         JPanel centerCenterPanel = createCenterCenterPanel();
 
         centerPanel.add(centerCenterPanel, BorderLayout.CENTER);
+        centerPanel.add(leftPanel, BorderLayout.WEST);
         centerPanel.setBackground(Color.decode("#474747"));
 
 
@@ -138,5 +149,13 @@ public class InscriptionPanel extends VentanaPrincipal {
 
     public void setAlumnoCliente(Student alumno) {
         this.alumnoCliente = alumno;
+    }
+
+
+    public JPanel createInscriptionMateriaPanel() {
+        inscriptionPanel.removeAll();
+        inscriptionPanel = new JPanel();
+
+        return inscriptionPanel;
     }
 }
