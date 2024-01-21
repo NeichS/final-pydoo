@@ -49,30 +49,41 @@ public class PanelAlumno extends VentanaPrincipal {
         });
         leftPanel.add(atras);
 
-        //center panel buttons
+        // Center panel buttons
         CustomButton signCareer = new CustomButton("Inscripcion carrera", "#494949", 180);
 
         signCareer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                VentanaPrincipal.getInscriptionPanel().createInscriptionCareerPanel();
                 VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "INSCRIPCION CARRERA");
-
             }
         });
 
         centerPanel.add(signCareer);
         centerPanel.add(Box.createVerticalStrut(10));
         signCareer.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         CustomButton signSubject = new CustomButton("Inscripcion materia", "#494949", 180);
         signSubject.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "INSCRIPCION MATERIA");
+                if (alumnoCliente.getCursaCarrera().isEmpty()) {
+                    // Menú para elegir la carrera en caso de estar anotado a más de una carrera
+                    JLabel errorMessage = new JLabel("No estás inscripto a ninguna carrera");
+                    errorMessage.setForeground(Color.red);
+                    centerPanel.add(errorMessage);
+                    errorMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+                } else {
+                    VentanaPrincipal.getInscriptionPanel().createChooseCareerPanel();
+                    cardLayout.show(cardPanel, "CHOOSE CAREER");
+                }
             }
         });
         centerPanel.add(signSubject);
         centerPanel.add(Box.createVerticalStrut(10));
         signSubject.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         CustomButton viewCareerProgress = new CustomButton("Progreso carrera", "#494949", 180);
         viewCareerProgress.addActionListener(new ActionListener() {
             @Override
@@ -83,6 +94,7 @@ public class PanelAlumno extends VentanaPrincipal {
         centerPanel.add(viewCareerProgress);
         centerPanel.add(Box.createVerticalStrut(10));
         viewCareerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         adminAlumnoPanel.add(leftPanel, BorderLayout.WEST);
         adminAlumnoPanel.add(centerPanel, BorderLayout.CENTER);
 

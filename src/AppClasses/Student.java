@@ -10,6 +10,7 @@ public class Student {
     private LinkedList<Subject> cursadasAprobadas = new LinkedList<>();
 
     private LinkedList<Career> cursaCarrera = new LinkedList<>();
+    private LinkedList<Subject> materiasInscripto = new LinkedList<>();
 
 
     public Student(String nombre, String apellido, String mail, char[] contrasenha) {
@@ -61,6 +62,7 @@ public class Student {
         return false;
     }
 
+    //Hace falta implementar un strategy para analizar las correlativas dependiendo del tipo de plan
     public boolean correlativasCheck(Subject materia){
         for (Integer subjectId : materia.getCorrelativas())
             if (!materiasAprobadas.contains(Subject.getSubjectById(subjectId))) {
@@ -79,6 +81,9 @@ public class Student {
     public void addCursadaAprobada(Subject materia) {
         cursadasAprobadas.add(materia);
     }
+    public LinkedList<Subject> getCursadasAprobadas() {
+        return cursadasAprobadas;
+    }
 
     public static Student getAlumnoByMail(String mail) {
         for (Student student : listaEstudiantes) {
@@ -94,6 +99,16 @@ public class Student {
 
     public void setCursaCarrera(Career carrera) {
         cursaCarrera.add(carrera);
+    }
+
+    public LinkedList<Subject> getMateriasAprobadas() {
+        return materiasAprobadas;
+    }
+    public void addMateriasInscripto(Subject subject) {
+        materiasInscripto.add(subject);
+    }
+    public LinkedList<Subject> getMateriasInscripto() {
+        return materiasInscripto;
     }
 }
 

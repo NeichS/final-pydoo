@@ -11,10 +11,11 @@ public class VentanaPrincipal {
     protected static JPanel cardPanel;
     protected static String variable;
     private Student alumnoCliente;
+    private static InscriptionPanel inscriptionPanel;
 
-    VentanaPrincipal(String caca) {
-        this.variable = caca;
-    }
+    VentanaPrincipal(String s) {
+        this.variable = s;
+    } //constructor cualquiera que si no esta se rompe
     static JPanel customPanelTop(String tittle) {
         JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelTop.setBackground(Color.decode("#474747"));
@@ -190,7 +191,6 @@ public class VentanaPrincipal {
                     inscriptionPanel.setAlumnoCliente(alumnoCliente);
                     registroPanel.setVisible(false);
                     panelAlumno.createMenuAlumnoPanel();
-                    inscriptionPanel.createInscriptionPanel();
                     emailField.setText("");
                     passwordField.setText("");
                     cardLayout.show(cardPanel, "MENU ALUMNO");
@@ -466,22 +466,27 @@ public class VentanaPrincipal {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         PanelAlumno alumnoPanel = new PanelAlumno(variable);
-        InscriptionPanel inscriptionPanel = new InscriptionPanel(variable);
+        inscriptionPanel = new InscriptionPanel(variable);
         // Agregar las vistas al panel que utiliza el CardLayout
-        cardPanel.add("MENU", createMenuPanel());
-        cardPanel.add("REGISTRO", createRegisterPanel(alumnoPanel, inscriptionPanel));
-        cardPanel.add("NEW USER", createNewUserPanel());
-        cardPanel.add("MENU ALUMNO", alumnoPanel.adminAlumnoPanel);
-        cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel());
-        cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel());
-        cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());
-        cardPanel.add("INSCRIPCION CARRERA", inscriptionPanel.inscriptionPanel);
-        cardPanel.add("INSCRIPCION MATERIA", inscriptionPanel.createInscriptionMateriaPanel());
+        cardPanel.add("MENU", createMenuPanel()); //menu principal
+        cardPanel.add("REGISTRO", createRegisterPanel(alumnoPanel, inscriptionPanel)); //login
+        cardPanel.add("NEW USER", createNewUserPanel()); //register new user
+        cardPanel.add("MENU ALUMNO", alumnoPanel.adminAlumnoPanel); //menu despues del login
+        cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel()); //confirmacion de registro
+        cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel()); //menu de admin
+        cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());//panel para ingresar pin
+        cardPanel.add("INSCRIPCION CARRERA", inscriptionPanel.getInscriptionCareerPanel());
+        cardPanel.add("INSCRIPCION MATERIA", inscriptionPanel.getInscriptionSubjectPanel());
+        cardPanel.add("CHOOSE CAREER", inscriptionPanel.getChooseCareerPanel()); //menu para elegir la carrera de las materias que se anota
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
 
         ventana.setVisible(true);
+    }
+
+    public static InscriptionPanel getInscriptionPanel() {
+        return inscriptionPanel;
     }
 }
 

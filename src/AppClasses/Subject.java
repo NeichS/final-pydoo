@@ -50,4 +50,18 @@ public class Subject {
     public Integer getSubjectId() {
         return  subjectId;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Subject otherSubject = (Subject) obj;
+        return Objects.equals(this.nombre, otherSubject.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre);
+    }
 }
