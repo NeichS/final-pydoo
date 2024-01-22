@@ -4,7 +4,6 @@ import AppClasses.Career;
 import AppClasses.Student;
 import AppClasses.StudyProgram;
 import AppClasses.Subject;
-
 import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.swing.*;
 import javax.swing.border.Border;

@@ -12,6 +12,7 @@ public class VentanaPrincipal {
     protected static String variable;
     private Student alumnoCliente;
     private static InscriptionPanel inscriptionPanel;
+    private static PanelAdmin panelAdmin;
 
     VentanaPrincipal(String s) {
         this.variable = s;
@@ -414,6 +415,7 @@ public class VentanaPrincipal {
                 char[] key = {'1', '2', '3', '4'};
 
                 if (Arrays.equals(pin, key)) {
+                    panelAdmin.createAdminCarreraPanel();
                     cardLayout.show(cardPanel, "ADMIN CARRERAS");
                 } else {
                     JLabel errorMessage = new JLabel("Contraseña incorrecta");
@@ -432,29 +434,6 @@ public class VentanaPrincipal {
         return adminSecurity;
     }
 
-    private JPanel createAdminCarreraPanel() {
-        JPanel adminCarreraPanel = new JPanel(new BorderLayout());
-        JPanel topPanel = customPanelTop("Administracion");
-        adminCarreraPanel.add(topPanel, BorderLayout.WEST);
-        CustomButton salir = new CustomButton("Salir", "#116A9A", 110);
-        salir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "MENU");
-            }
-        });
-        JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(Color.decode("#292929"));
-
-        JPanel centerPanel = new JPanel();
-        centerPanel.setBackground(Color.decode("#292929"));
-
-        leftPanel.add(salir);
-        adminCarreraPanel.add(leftPanel, BorderLayout.WEST);
-        adminCarreraPanel.add(topPanel, BorderLayout.NORTH);
-        adminCarreraPanel.add(centerPanel, BorderLayout.CENTER);
-        return adminCarreraPanel;
-    }
 
 
     public VentanaPrincipal() {
@@ -467,13 +446,15 @@ public class VentanaPrincipal {
         cardPanel = new JPanel(cardLayout);
         PanelAlumno alumnoPanel = new PanelAlumno(variable);
         inscriptionPanel = new InscriptionPanel(variable);
+        panelAdmin = new PanelAdmin(variable);
+
         // Agregar las vistas al panel que utiliza el CardLayout
         cardPanel.add("MENU", createMenuPanel()); //menu principal
         cardPanel.add("REGISTRO", createRegisterPanel(alumnoPanel, inscriptionPanel)); //login
         cardPanel.add("NEW USER", createNewUserPanel()); //register new user
         cardPanel.add("MENU ALUMNO", alumnoPanel.adminAlumnoPanel); //menu despues del login
         cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel()); //confirmacion de registro
-        cardPanel.add("ADMIN CARRERAS", createAdminCarreraPanel()); //menu de admin
+        cardPanel.add("ADMIN CARRERAS", panelAdmin.getAdminCarreraPanel()); //menu de admin
         cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());//panel para ingresar pin
         cardPanel.add("INSCRIPCION CARRERA", inscriptionPanel.getInscriptionCareerPanel());
         cardPanel.add("INSCRIPCION MATERIA", inscriptionPanel.getInscriptionSubjectPanel());
