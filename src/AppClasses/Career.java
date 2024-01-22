@@ -35,4 +35,7 @@ public class Career {
         return this.name;
     }
 
+    public Integer checkProgressCareer(Student student) {
+           return  planDeEstudio.subjectQuantity() / student.getMateriasAprobadas().size() ;
+    }
 }

@@ -478,6 +478,7 @@ public class VentanaPrincipal {
         cardPanel.add("INSCRIPCION CARRERA", inscriptionPanel.getInscriptionCareerPanel());
         cardPanel.add("INSCRIPCION MATERIA", inscriptionPanel.getInscriptionSubjectPanel());
         cardPanel.add("CHOOSE CAREER", inscriptionPanel.getChooseCareerPanel()); //menu para elegir la carrera de las materias que se anota
+        cardPanel.add("CAREER PROGRESS", inscriptionPanel.getProgressCareerPanel());
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);

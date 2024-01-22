@@ -8,6 +8,7 @@ import AppClasses.Subject;
 import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,12 +17,12 @@ import java.util.LinkedList;
 
 public class InscriptionPanel extends VentanaPrincipal {
     private Student alumnoCliente;
-    private JPanel inscriptionCareerPanel;
+    private JPanel inscriptionCareerPanel = new JPanel();
     private JPanel inscriptionSubjectPanel = new JPanel();
+    private JPanel progressCareerPanel = new JPanel();
 
     InscriptionPanel(String variable) {
         super(variable);
-        inscriptionCareerPanel = new JPanel();
         inscriptionCareerPanel.setLayout(new BorderLayout());
         inscriptionCareerPanel.setBackground(Color.decode("#292929"));
 
@@ -75,13 +76,20 @@ public class InscriptionPanel extends VentanaPrincipal {
                     panel.add(errorMessage);
 
                 } else {
-                    alumnoCliente.setCursaCarrera(career);
-                    JLabel successMessage = new JLabel("Se ha inscripto correctamente");
-                    VentanaPrincipal.getInscriptionPanel().createChooseCareerPanel();
-                    successMessage.setForeground(Color.decode("#119A26"));
-                    successMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    panel.add(successMessage);
+                    int respuesta = JOptionPane.showConfirmDialog(
+                            null,
+                            "¿Desea inscribirse a la carrera " + career + "?",
+                            "Confirmación",
+                            JOptionPane.YES_NO_OPTION);
 
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        alumnoCliente.setCursaCarrera(career);
+                        JLabel successMessage = new JLabel("Se ha inscripto correctamente");
+                        VentanaPrincipal.getInscriptionPanel().createChooseCareerPanel();
+                        successMessage.setForeground(Color.decode("#119A26"));
+                        successMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        panel.add(successMessage);
+                    }
                 }
             }
         });
@@ -277,10 +285,54 @@ public class InscriptionPanel extends VentanaPrincipal {
                 centerPanel.add(Box.createVerticalStrut(5));
             }
         }
-
+        inscriptionSubjectPanel.setBackground(Color.decode("#292929"));
         // Agregar el JScrollPane al inscriptionSubjectPanel en lugar del centerPanel directamente
         inscriptionSubjectPanel.add(scrollPane, BorderLayout.CENTER);
         inscriptionSubjectPanel.add(leftPanel, BorderLayout.WEST);
+    }
+    public void createProgressCareerPanel() {
+        progressCareerPanel.setLayout(new BorderLayout());
+        JPanel topPanel = customPanelTop("Progreso de carrera");
+        progressCareerPanel.add(topPanel, BorderLayout.NORTH);
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+        CustomButton atras = new CustomButton("Volver", "#116A94", 110);
+        atras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "MENU ALUMNO");
+            }
+        });
+        leftPanel.add(atras);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        for (Career career : alumnoCliente.getCursaCarrera()) {
+            centerPanel.add(Box.createVerticalStrut(50));
+
+            JLabel materiaNombre = new JLabel(career.getName());
+            materiaNombre.setForeground(Color.white);
+            materiaNombre.setFont(new Font("Arial", 0, 12));
+            centerPanel.add(Box.createVerticalStrut(20));
+            centerPanel.add(materiaNombre);
+            materiaNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            centerPanel.add(Box.createVerticalStrut(10));
+            JProgressBar careerProgress = new JProgressBar(0,100);
+            careerProgress.setStringPainted(true);
+            System.out.println(career.checkProgressCareer(alumnoCliente));
+            careerProgress.setValue(career.checkProgressCareer(alumnoCliente));
+            careerProgress.setMaximumSize(new Dimension(300,40));
+            careerProgress.setBackground(Color.decode("#474747"));
+            careerProgress.setForeground(Color.decode("#116A9A"));
+            centerPanel.add(careerProgress);;
+            centerPanel.add(Box.createVerticalStrut(10));
+            careerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        centerPanel.setBackground(Color.decode("#292929"));
+        progressCareerPanel.add(centerPanel, BorderLayout.CENTER);
+        progressCareerPanel.add(leftPanel, BorderLayout.WEST);
     }
 
     public JPanel getInscriptionCareerPanel() {
@@ -294,5 +346,8 @@ public class InscriptionPanel extends VentanaPrincipal {
 
     public JPanel getChooseCareerPanel() {
         return chooseCareerPanel;
+    }
+    public JPanel getProgressCareerPanel() {
+        return progressCareerPanel;
     }
 }

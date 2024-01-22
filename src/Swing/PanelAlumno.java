@@ -88,7 +88,8 @@ public class PanelAlumno extends VentanaPrincipal {
         viewCareerProgress.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "PROGRESO CARRERA");
+                VentanaPrincipal.getInscriptionPanel().createProgressCareerPanel();
+                cardLayout.show(cardPanel, "CAREER PROGRESS");
             }
         });
         centerPanel.add(viewCareerProgress);

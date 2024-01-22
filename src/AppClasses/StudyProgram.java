@@ -22,4 +22,13 @@ public class StudyProgram {
     public Map<Integer, LinkedList<Subject>> getPrograma() {
         return programa;
     }
+
+    public int subjectQuantity() {
+        int max = programa.size();
+        int counter = 0;
+        for (int i = 1 ; i <= max ; i++) {
+            counter = counter + programa.get(i).size();
+            }
+        return counter;
+    }
 }
