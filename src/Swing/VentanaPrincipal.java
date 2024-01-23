@@ -406,7 +406,8 @@ public class VentanaPrincipal {
         securityPin.setAlignmentY(Component.CENTER_ALIGNMENT);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(securityPin);
-
+        JLabel errorMessage = new JLabel("Contraseña incorrecta");
+        centerPanel.add(Box.createVerticalStrut(20));
         CustomButton confirmButton = new CustomButton("Ingresar", "#119A26", 110);
         confirmButton.addActionListener(new ActionListener() {
             @Override
@@ -418,10 +419,8 @@ public class VentanaPrincipal {
                     panelAdmin.createAdminCarreraPanel();
                     cardLayout.show(cardPanel, "ADMIN CARRERAS");
                 } else {
-                    JLabel errorMessage = new JLabel("Contraseña incorrecta");
                     errorMessage.setForeground(Color.red);
                     errorMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    centerPanel.add(Box.createVerticalStrut(10));
                     centerPanel.add(errorMessage);
                 }
             }
@@ -454,12 +453,14 @@ public class VentanaPrincipal {
         cardPanel.add("NEW USER", createNewUserPanel()); //register new user
         cardPanel.add("MENU ALUMNO", alumnoPanel.adminAlumnoPanel); //menu despues del login
         cardPanel.add("REGISTRO CONFIRMADO", createConfirmRegisterPanel()); //confirmacion de registro
-        cardPanel.add("ADMIN CARRERAS", panelAdmin.getAdminCarreraPanel()); //menu de admin
-        cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());//panel para ingresar pin
         cardPanel.add("INSCRIPCION CARRERA", inscriptionPanel.getInscriptionCareerPanel());
         cardPanel.add("INSCRIPCION MATERIA", inscriptionPanel.getInscriptionSubjectPanel());
         cardPanel.add("CHOOSE CAREER", inscriptionPanel.getChooseCareerPanel()); //menu para elegir la carrera de las materias que se anota
         cardPanel.add("CAREER PROGRESS", inscriptionPanel.getProgressCareerPanel());
+        cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());//panel para ingresar pin
+        cardPanel.add("ADMIN CARRERAS", panelAdmin.getAdminCarreraPanel()); //menu de admin
+        cardPanel.add("CREATE CAREER", panelAdmin.getCrateCareerPanel());
+        cardPanel.add("CREATE STUDY PROGRAM", panelAdmin.getStudyProgramCreatorPanel());
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
