@@ -8,10 +8,13 @@ import java.util.Map;
 public class StudyProgram {
     private char tipoPlan;
     private Map<Integer, LinkedList<Subject>> programa;
+    private static LinkedList<StudyProgram> planesCreados = new LinkedList<>();
 
     public StudyProgram(char tipoPlan, Map<Integer, LinkedList<Subject>> programa) {
         this.tipoPlan = tipoPlan;
         this.programa = programa;
+
+        planesCreados.add(this);
     }
 
     //i es el cuatrimestre

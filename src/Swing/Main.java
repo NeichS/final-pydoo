@@ -28,15 +28,14 @@ public class Main {
         primerCuatrimestre.add(elementosLogicaMatematicaDiscreta);
 
         Subject algoritmicaProgramacionI = new Subject("Algorítmica y Programación I", new LinkedList<>());
-        LinkedList<Integer> correlativasArqui= new LinkedList<>();
-        correlativasArqui.add(3);
-        correlativasArqui.add(4);
+        LinkedList<Subject> correlativasArqui = new LinkedList<>();
+        correlativasArqui.add(algebra);
+        correlativasArqui.add(analisisMatematico);
         Subject arquitecturaComputadoras = new Subject("Arquitectura de Computadoras", correlativasArqui);
 
-
-        LinkedList<Integer> correlativasEstadistica = new LinkedList<>();
-        correlativasEstadistica.add(1);
-        correlativasEstadistica.add(2);
+        LinkedList<Subject> correlativasEstadistica = new LinkedList<>();
+        correlativasEstadistica.add(algebra);
+        correlativasEstadistica.add(analisisMatematico);
         Subject estadistica = new Subject("Estadística", correlativasEstadistica);
 
         LinkedList<Subject> segundoCuatrimestre = new LinkedList<>();
@@ -46,10 +45,9 @@ public class Main {
 
         Subject sistemasOrganizaciones = new Subject("Sistemas y Organizaciones", new LinkedList<>());
 
-
-        LinkedList<Integer> correlativasBD = new LinkedList<>();
-        correlativasBD.add(1);
-        correlativasBD.add(4);
+        LinkedList<Subject> correlativasBD = new LinkedList<>();
+        correlativasBD.add(algebra);
+        correlativasBD.add(arquitecturaComputadoras);
         Subject basesDatosI = new Subject("Bases de Datos I", correlativasBD);
 
         Subject ingenieriaSoftwareI = new Subject("Ingeniería de Software I", new LinkedList<>());
@@ -59,15 +57,16 @@ public class Main {
         tercerCuatrimestre.add(basesDatosI);
         tercerCuatrimestre.add(ingenieriaSoftwareI);
 
-        LinkedList<Integer> correlativasPydoo = new LinkedList<>();
-        correlativasPydoo.add(4);
+        LinkedList<Subject> correlativasPydoo = new LinkedList<>();
+        correlativasPydoo.add(ingenieriaSoftwareI);
         Subject programacionDisenoOrientadoObjetos = new Subject("Programación y Diseño Orientado a Objetos", correlativasPydoo);
-        LinkedList<Integer> correlativasFTI = new LinkedList<>();
-        correlativasFTI.add(9);
+
+        LinkedList<Subject> correlativasFTI = new LinkedList<>();
+        correlativasFTI.add(programacionDisenoOrientadoObjetos);
         Subject fundamentosTeoricosInformatica = new Subject("Fundamentos Teóricos de Informática", correlativasFTI);
 
-        LinkedList<Integer> correlativasIngII = new LinkedList<>();
-        correlativasIngII.add(9);
+        LinkedList<Subject> correlativasIngII = new LinkedList<>();
+        correlativasIngII.add(programacionDisenoOrientadoObjetos);
         Subject ingenieriaSoftwareII = new Subject("Ingeniería de Software II", correlativasIngII);
 
         LinkedList<Subject> cuartoCuatrimestre = new LinkedList<>();
@@ -75,33 +74,33 @@ public class Main {
         cuartoCuatrimestre.add(fundamentosTeoricosInformatica);
         cuartoCuatrimestre.add(ingenieriaSoftwareII);
 
-        LinkedList<Integer> correlativasIntrConc = new LinkedList<>();
-        correlativasIntrConc.add(4);
-        correlativasIntrConc.add(10);
+        LinkedList<Subject> correlativasIntrConc = new LinkedList<>();
+        correlativasIntrConc.add(programacionDisenoOrientadoObjetos);
+        correlativasIntrConc.add(basesDatosI);
         Subject introduccionConcurrencia = new Subject("Introducción a la Concurrencia", correlativasIntrConc);
 
-        LinkedList<Integer> correlativasLabProg = new LinkedList<>();
-        correlativasLabProg.add(4);
-        correlativasLabProg.add(10);
-        Subject laboratorioProgramacionLenguajes = new Subject("Laboratorio de Programación y Lenguajes", correlativasLabProg);
+        LinkedList<Subject> correlativasLabProg = new LinkedList<>();
+        correlativasLabProg.add(programacionDisenoOrientadoObjetos);
+        correlativasLabProg.add(introduccionConcurrencia);
 
-        LinkedList<Integer> correlativasDBII = new LinkedList<>();
-        correlativasDBII.add(8);
+        LinkedList<Subject> correlativasDBII = new LinkedList<>();
+        correlativasDBII.add(basesDatosI);
         Subject basesDatosII = new Subject("Bases de Datos II", correlativasDBII);
 
         LinkedList<Subject> quintoCuatrimestre = new LinkedList<>();
         quintoCuatrimestre.add(introduccionConcurrencia);
-        quintoCuatrimestre.add(laboratorioProgramacionLenguajes);
+        quintoCuatrimestre.add(fundamentosTeoricosInformatica);
         quintoCuatrimestre.add(basesDatosII);
 
-        LinkedList<Integer> correlativaLabSOft = new LinkedList<>();
-        correlativaLabSOft.add(14);
+        LinkedList<Subject> correlativaLabSOft = new LinkedList<>();
+        correlativaLabSOft.add(introduccionConcurrencia);
         Subject laboratorioSoftware = new Subject("Laboratorio de Software", correlativaLabSOft);
         Subject seminarioAspectosLegalesProfesionalesI = new Subject("Seminario de Aspectos Legales y Profesionales I", new LinkedList<>());
 
-        LinkedList<Integer> correlativasSO = new LinkedList<>();
-        correlativasSO.add(15);
+        LinkedList<Subject> correlativasSO = new LinkedList<>();
+        correlativasSO.add(laboratorioSoftware);
         Subject sistemasOperativos = new Subject("Sistemas Operativos", correlativasSO);
+
 
         LinkedList<Subject> sextoCuatrimestre = new LinkedList<>();
         sextoCuatrimestre.add(laboratorioSoftware);
@@ -121,11 +120,11 @@ public class Main {
         Career LicSistemas = new Career("Licenciatura en Sistemas", sistemasPrograma);
         Career LicEconomia = new Career("Lic en Economia", new StudyProgram('A', new HashMap<>()));
 
-        alumnoUno.addMateriaAprobada(algebra);
-        alumnoUno.addMateriaAprobada(analisisMatematico);
-        alumnoUno.addMateriaAprobada(elementosLogicaMatematicaDiscreta);
-        alumnoUno.addMateriaAprobada(estadistica);
-        alumnoUno.addMateriaAprobada(algoritmicaProgramacionI);
+        alumnoUno.addMateriaAprobada(algebra, 9);
+        alumnoUno.addMateriaAprobada(analisisMatematico, 8);
+        alumnoUno.addMateriaAprobada(elementosLogicaMatematicaDiscreta, 9 );
+        alumnoUno.addMateriaAprobada(estadistica, 5 );
+        alumnoUno.addMateriaAprobada(algoritmicaProgramacionI ,10 );
 
         alumnoUno.setCursaCarrera(LicSistemas);
         //alumnoUno.setCursaCarrera(LicEconomia);

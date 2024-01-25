@@ -4,14 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Subject {
+public class Subject  {
 
-    public static List<Subject> listaMaterias = new LinkedList<>(); //lista de materias que existen
+    public static LinkedList<Subject> listaMaterias = new LinkedList<>(); //lista de materias que existen
     private String nombre;
-    private LinkedList<Integer> correlativas;
+    private LinkedList<Subject> correlativas;
 
     private static Integer subjectIdSerial = 0;
     private Integer subjectId;
+    private boolean promocion;
 
     public static boolean existeId(Integer id) {
         for (Subject subject : listaMaterias) {
@@ -22,10 +23,29 @@ public class Subject {
         return false;
     }
 
-    public Subject(String nombre, LinkedList<Integer> correlativas) {
+    public Subject(String nombre, Boolean promocion) {
+        this.nombre = nombre;
+        this.promocion = promocion;
+        this.subjectId = subjectIdSerial +1;
+        this.correlativas = null;
+        subjectIdSerial++;
+        listaMaterias.add(this);
+    }
+    public Subject(String nombre, LinkedList<Subject> correlativas) {
         this.nombre = nombre;
         this.correlativas = correlativas;
+        this.promocion = false;
         this.subjectId = subjectIdSerial + 1;
+
+        subjectIdSerial++;
+        listaMaterias.add(this);
+    }
+    public Subject(String nombre, LinkedList<Subject> correlativas, boolean promocion) {
+        this.nombre = nombre;
+        this.correlativas = correlativas;
+        this.promocion = promocion;
+        this.subjectId = subjectIdSerial + 1;
+
         subjectIdSerial++;
         listaMaterias.add(this);
     }
@@ -43,7 +63,7 @@ public class Subject {
         return this.nombre;
     }
 
-    public LinkedList<Integer> getCorrelativas() {
+    public LinkedList<Subject> getCorrelativas() {
         return correlativas;
     }
 
@@ -63,5 +83,23 @@ public class Subject {
     @Override
     public int hashCode() {
         return Objects.hash(nombre);
+    }
+
+    public Boolean promociona(Student student) {
+        RegistroNota registro = student.getRegistroMateria(this);
+        if (student.getCursadasAprobadas().contains(this) && this.promocion && (registro.getNota() >= 7)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setCorrelativas(Subject subject) {
+        if (this.correlativas == null) {
+            correlativas = new LinkedList<>();
+            correlativas.add(subject);
+        } else {
+            correlativas.add(subject);
+        }
     }
 }

@@ -6,8 +6,8 @@ public class Student {
     private static List<Student> listaEstudiantes = new ArrayList<Student>();
     private String nombre, apellido, mail;
     private char[] contrasenha;
-    private LinkedList<Subject> materiasAprobadas = new LinkedList<>();
-    private LinkedList<Subject> cursadasAprobadas = new LinkedList<>();
+    private LinkedList<RegistroNota> cursadasAprobadas = new LinkedList<>();
+    private LinkedList<RegistroNota> materiasAprobadas = new LinkedList<>();
 
     private LinkedList<Career> cursaCarrera = new LinkedList<>();
     private LinkedList<Subject> materiasInscripto = new LinkedList<>();
@@ -64,24 +64,24 @@ public class Student {
 
     //Hace falta implementar un strategy para analizar las correlativas dependiendo del tipo de plan
     public boolean correlativasCheck(Subject materia){
-        for (Integer subjectId : materia.getCorrelativas())
-            if (!materiasAprobadas.contains(Subject.getSubjectById(subjectId))) {
+        for (Subject subject : materia.getCorrelativas())
+            if (!materiasAprobadas.contains(subject)) {
                 return false;
             }
         return true;
     }
-    public void addMateriaAprobada(Subject materia) {
+    public void addMateriaAprobada(Subject materia, Integer nota) {
         if (correlativasCheck(materia)) {
-            materiasAprobadas.add(materia);
+            materiasAprobadas.add(new RegistroNota(materia, nota));
         } else {
             System.out.println("No cumple con las correlativas para aprobar la materia " + materia);
         }
     }
 
-    public void addCursadaAprobada(Subject materia) {
-        cursadasAprobadas.add(materia);
+    public void addCursadaAprobada(Subject materia, Integer nota) {
+        cursadasAprobadas.add(new RegistroNota(materia, nota));
     }
-    public LinkedList<Subject> getCursadasAprobadas() {
+    public LinkedList<RegistroNota> getCursadasAprobadas() {
         return cursadasAprobadas;
     }
 
@@ -101,7 +101,7 @@ public class Student {
         cursaCarrera.add(carrera);
     }
 
-    public LinkedList<Subject> getMateriasAprobadas() {
+    public LinkedList<RegistroNota> getMateriasAprobadas() {
         return materiasAprobadas;
     }
     public void addMateriasInscripto(Subject subject) {
@@ -109,6 +109,15 @@ public class Student {
     }
     public LinkedList<Subject> getMateriasInscripto() {
         return materiasInscripto;
+    }
+
+    public RegistroNota getRegistroMateria(Subject subject) {
+        for (RegistroNota registro : getCursadasAprobadas()) {
+            if (registro.getSubject() == subject) {
+                return registro;
+            }
+        }
+        return null;
     }
 }
 
