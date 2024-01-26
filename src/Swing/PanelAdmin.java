@@ -351,6 +351,7 @@ public class PanelAdmin extends VentanaPrincipal{
         elegirNombre.setForeground(Color.WHITE);
         centerPanel.add(elegirNombre);
         elegirNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(Box.createVerticalStrut(20));
 
         CustomButton confirmar = new CustomButton("Confirmar", "#119A26", 120);
         confirmar.addActionListener(new ActionListener() {
