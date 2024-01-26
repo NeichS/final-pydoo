@@ -60,7 +60,7 @@ public class Subject  {
     }
     @Override
     public String toString() {
-        return this.nombre;
+        return nombre;
     }
 
     public LinkedList<Subject> getCorrelativas() {
@@ -101,5 +101,18 @@ public class Subject  {
         } else {
             correlativas.add(subject);
         }
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public static Subject getSubjectByStringName(String nombre) {
+        for (Subject subject : listaMaterias) {
+            if (nombre == subject.getNombre()) {
+                return subject;
+            }
+        }
+        return null;
     }
 }

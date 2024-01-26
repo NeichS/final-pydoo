@@ -1,5 +1,6 @@
 package Swing;
 
+import AppClasses.Career;
 import AppClasses.StudyProgram;
 import AppClasses.Subject;
 
@@ -17,6 +18,7 @@ public class PanelAdmin extends VentanaPrincipal{
     private JPanel adminCarreraPanel = new JPanel();
     private JPanel careerCreatorPanel = new JPanel();
     private JPanel studyProgramCreatorPanel = new JPanel();
+    private JPanel chooseCareerNamePanel = new JPanel();
 
     PanelAdmin(String s) {
         super(s);
@@ -110,7 +112,7 @@ public class PanelAdmin extends VentanaPrincipal{
         });
         centerPanel.add(Box.createVerticalStrut(10));
         tipoPlanOpciones.setMaximumRowCount(4);
-        tipoPlanOpciones.setMaximumSize(new Dimension(80,30));
+        tipoPlanOpciones.setMaximumSize(new Dimension(80,35));
         centerPanel.add(tipoPlanOpciones);
         tipoPlanOpciones.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -201,7 +203,7 @@ public class PanelAdmin extends VentanaPrincipal{
         confirmar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int respuesta = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres cancelar la creacion del plan de estudio?", "Si", JOptionPane.YES_NO_OPTION);
+                int respuesta = JOptionPane.showConfirmDialog(null, "Confirmar plan de estudio?", "Si", JOptionPane.YES_NO_OPTION);
 
                 if (respuesta == JOptionPane.YES_OPTION) {
                     JOptionPane.showMessageDialog(null,"Se ha creado el nuevo plan de estudio" , "Exito" , JOptionPane.INFORMATION_MESSAGE);
@@ -222,7 +224,7 @@ public class PanelAdmin extends VentanaPrincipal{
     public void createCareerCreator(StudyProgram programa) {
         careerCreatorPanel.setBackground(Color.decode("#292929"));
         careerCreatorPanel.setLayout(new BorderLayout());
-        JPanel panelTop = customPanelTop("Paso 2: Asignar correlativa");
+        JPanel panelTop = customPanelTop("Paso 2: Asignar correlativas");
         careerCreatorPanel.add(panelTop, BorderLayout.NORTH);
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
@@ -237,8 +239,141 @@ public class PanelAdmin extends VentanaPrincipal{
         careerCreatorPanel.add(leftPanel, BorderLayout.WEST);
 
         JPanel centerPanel = new JPanel();
+        JScrollPane scrollPane = new JScrollPane(centerPanel);
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(Color.decode("#292929"));
+        centerPanel.add(Box.createVerticalStrut(20));
 
+        centerPanel.add(Box.createVerticalStrut(20));
+        for (int i = 1; i <= programa.getPrograma().size(); i++) {
+            centerPanel.add(Box.createVerticalStrut(20));
+            JLabel tittleCuatrimestre = new JLabel("Cuatrimestre " + i );
+            tittleCuatrimestre.setForeground(Color.white);
+            tittleCuatrimestre.setBackground(Color.decode("#292929"));
+            centerPanel.add(tittleCuatrimestre);
+            tittleCuatrimestre.setAlignmentX(Component.CENTER_ALIGNMENT);
+            centerPanel.add(Box.createVerticalStrut(20));
+            for (Subject subject : programa.getPrograma().get(i)) {
+                JPanel subjectRowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                subjectRowPanel.setBackground(Color.decode("#292929"));
+                JLabel materiaNombre = new JLabel(subject.getNombre());
+                materiaNombre.setForeground(Color.white);
+                materiaNombre.setFont(new Font("Arial", 0, 12));
+                subjectRowPanel.add(materiaNombre);
 
+                //se tiene en cuenta que las materias del primer cuatrimestre no pueden tener correlativas
+                if (i != 1) {
+                    LinkedList<Subject> subjectsList = programa.getAllSubjects();
+                    String[] subjectNames = new String[subjectsList.size()];
+                    for (int j = 0; j < subjectsList.size(); j++) {
+                        subjectNames[j] = subjectsList.get(j).toString();
+                    }
+                    DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(subjectNames);
+                    JComboBox<String> materiasOpciones = new JComboBox<>(comboBoxModel);
+                    materiasOpciones.setMaximumRowCount(6);
+                    materiasOpciones.setMaximumSize(new Dimension(200,35));
+                    materiasOpciones.setSelectedItem("----");
+                    subjectRowPanel.add(materiasOpciones);
+                    CustomButton agregarCorrelativa = new CustomButton("agregar", "#116A94", 80);
+                    agregarCorrelativa.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            Subject materiaElegida = Subject.getSubjectByStringName((String) materiasOpciones.getSelectedItem());
+                            if (materiaElegida != null) {
+                                subject.setCorrelativas(materiaElegida);
+                            } else {
+                                System.out.println("Ocurrio un error, la materia es nula");
+                            }
+                            materiasOpciones.setSelectedItem("----");
+                        }
+                    });
+                    subjectRowPanel.add(agregarCorrelativa);
+                    centerPanel.add(subjectRowPanel);
+                    subjectRowPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                } else {
+                    JLabel message = new JLabel("No puede asignar correlativas al primer cuatrimestre");
+                    message.setForeground(Color.white);
+                    message.setFont(new Font("Arial", 0, 12));
+                    centerPanel.add(message);
+                    message.setAlignmentX(Component.CENTER_ALIGNMENT);
+                }
+            }
+        }
+        careerCreatorPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.decode("#292929"));
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        CustomButton confirmar = new CustomButton("Confirmar", "#119A26",120);
+        confirmar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int respuesta = JOptionPane.showConfirmDialog(null, "Confirmar correlativas?", "Si", JOptionPane.YES_NO_OPTION);
+
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    createChooseCareerName(programa);
+                    cardLayout.show(cardPanel, "CHOOSE CAREER NAME");
+                }
+            }
+        });
+        bottomPanel.add(confirmar);
+        careerCreatorPanel.add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    private void createChooseCareerName(StudyProgram program) {
+        chooseCareerNamePanel.setBackground(Color.decode("#292929"));
+        chooseCareerNamePanel.setLayout(new BorderLayout());
+
+        JPanel topPanel = customPanelTop("Paso 3: elegir nombre de la carrera");
+        chooseCareerNamePanel.add(topPanel, BorderLayout.NORTH);
+
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+        CustomButton atras = new CustomButton("Volver", "#116A9A", 110);
+        atras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "ADMIN CARRERAS");
+            }
+        });
+        leftPanel.add(atras);
+        chooseCareerNamePanel.add(leftPanel, BorderLayout.WEST);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(Color.decode("#292929"));
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(Box.createVerticalStrut(50));
+
+        JTextField elegirNombre = new JTextField();
+        elegirNombre.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "nombre carrera"));
+        elegirNombre.setMaximumSize(new Dimension(200, 40)); // Limitar la altura del campo
+        elegirNombre.setBackground(Color.decode("#474747")); // Establecer el color de fondo
+        elegirNombre.setForeground(Color.WHITE);
+        centerPanel.add(elegirNombre);
+        elegirNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        CustomButton confirmar = new CustomButton("Confirmar", "#119A26", 120);
+        confirmar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int respuesta = JOptionPane.showConfirmDialog(null, "Estas seguro de el nombre ingresado?", "Si", JOptionPane.YES_NO_OPTION);
+
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    String nombreCarrera = elegirNombre.getText();
+                    Career nuevaCarrera = new Career(nombreCarrera, program);
+
+                    JLabel successMessage = new JLabel("Se ha creado la nueva carrera con exito");
+                    successMessage.setForeground(Color.decode("#119A26"));
+                    successMessage.setFont(new Font("Arial", 0, 12));
+                    centerPanel.add(successMessage);
+                    successMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+                }
+            }
+        });
+        centerPanel.add(confirmar);
+        confirmar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        chooseCareerNamePanel.add(centerPanel, BorderLayout.CENTER);
     }
 
     public JPanel getAdminCarreraPanel() {
@@ -249,5 +384,8 @@ public class PanelAdmin extends VentanaPrincipal{
     }
     public JPanel getStudyProgramCreatorPanel() {
         return studyProgramCreatorPanel;
+    }
+    public JPanel getChooseCareerNamePanel() {
+        return chooseCareerNamePanel;
     }
 }

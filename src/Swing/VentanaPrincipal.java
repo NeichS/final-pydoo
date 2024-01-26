@@ -461,6 +461,7 @@ public class VentanaPrincipal {
         cardPanel.add("ADMIN CARRERAS", panelAdmin.getAdminCarreraPanel()); //menu de admin
         cardPanel.add("CREATE CAREER", panelAdmin.getCrateCareerPanel());
         cardPanel.add("CREATE STUDY PROGRAM", panelAdmin.getStudyProgramCreatorPanel());
+        cardPanel.add("CHOOSE CAREER NAME", panelAdmin.getChooseCareerNamePanel());
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);

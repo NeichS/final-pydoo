@@ -9,10 +9,17 @@ public class StudyProgram {
     private char tipoPlan;
     private Map<Integer, LinkedList<Subject>> programa;
     private static LinkedList<StudyProgram> planesCreados = new LinkedList<>();
+    private LinkedList<Subject> allSubjects = new LinkedList<>();
 
     public StudyProgram(char tipoPlan, Map<Integer, LinkedList<Subject>> programa) {
         this.tipoPlan = tipoPlan;
         this.programa = programa;
+
+        for (int i = 1; i <= programa.size(); i++ ) {
+            for (Subject subject : programa.get(i)) {
+                allSubjects.add(subject);
+            }
+        }
 
         planesCreados.add(this);
     }
@@ -33,5 +40,9 @@ public class StudyProgram {
             counter = counter + programa.get(i).size();
             }
         return counter;
+    }
+
+    public LinkedList<Subject> getAllSubjects() {
+        return allSubjects;
     }
 }
