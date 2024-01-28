@@ -6,8 +6,8 @@ public class Student {
     private static List<Student> listaEstudiantes = new ArrayList<Student>();
     private String nombre, apellido, mail;
     private char[] contrasenha;
-    private LinkedList<RegistroNota> cursadasAprobadas = new LinkedList<>();
-    private LinkedList<RegistroNota> materiasAprobadas = new LinkedList<>();
+    private LinkedList<RegistroNota> cursadasAprobadas = new LinkedList<>(); //con parcial aprobado
+    private LinkedList<RegistroNota> materiasAprobadas = new LinkedList<>(); //con final aprobado o parcial promocionado
 
     private LinkedList<Career> cursaCarrera = new LinkedList<>();
     private LinkedList<Subject> materiasInscripto = new LinkedList<>();
@@ -73,12 +73,22 @@ public class Student {
     public void addMateriaAprobada(Subject materia, Integer nota) {
         if (correlativasCheck(materia)) {
             materiasAprobadas.add(new RegistroNota(materia, nota));
+            if (cursadasAprobadas.contains(materia)) {
+                cursadasAprobadas.remove(materia);
+            }
         } else {
-            System.out.println("No cumple con las correlativas para aprobar la materia " + materia);
+            //System.out.println("No cumple con las correlativas para aprobar la materia " + materia);
         }
     }
 
     public void addCursadaAprobada(Subject materia, Integer nota) {
+
+        if (materia.getPromocion() && nota >= 8) {
+            addMateriaAprobada(materia, nota);
+        } else {
+            addCursadaAprobada(materia, nota);
+        }
+
         cursadasAprobadas.add(new RegistroNota(materia, nota));
     }
     public LinkedList<RegistroNota> getCursadasAprobadas() {

@@ -115,4 +115,7 @@ public class Subject  {
         }
         return null;
     }
+    public Boolean getPromocion() {
+        return promocion;
+    }
 }

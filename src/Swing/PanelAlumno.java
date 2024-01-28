@@ -96,6 +96,18 @@ public class PanelAlumno extends VentanaPrincipal {
         centerPanel.add(Box.createVerticalStrut(10));
         viewCareerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        //que materias puede cursar boton
+        CustomButton materiasInscribibles = new CustomButton("Que puedo cursar?", "#494949", 180);
+        materiasInscribibles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaPrincipal.getSubjectsAvailable().createChooseCareerPanel(alumnoCliente);
+                cardLayout.show(cardPanel, "CHOOSE CAREER 2");
+            }
+        });
+        centerPanel.add(materiasInscribibles);
+        materiasInscribibles.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         adminAlumnoPanel.add(leftPanel, BorderLayout.WEST);
         adminAlumnoPanel.add(centerPanel, BorderLayout.CENTER);
 

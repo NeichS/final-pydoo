@@ -13,6 +13,7 @@ public class VentanaPrincipal {
     private Student alumnoCliente;
     private static InscriptionPanel inscriptionPanel;
     private static PanelAdmin panelAdmin;
+    private static SubjectsAvailable subjectsAvailable;
 
     VentanaPrincipal(String s) {
         this.variable = s;
@@ -446,6 +447,7 @@ public class VentanaPrincipal {
         PanelAlumno alumnoPanel = new PanelAlumno(variable);
         inscriptionPanel = new InscriptionPanel(variable);
         panelAdmin = new PanelAdmin(variable);
+        subjectsAvailable = new SubjectsAvailable(variable);
 
         // Agregar las vistas al panel que utiliza el CardLayout
         cardPanel.add("MENU", createMenuPanel()); //menu principal
@@ -462,6 +464,8 @@ public class VentanaPrincipal {
         cardPanel.add("CREATE CAREER", panelAdmin.getCrateCareerPanel());
         cardPanel.add("CREATE STUDY PROGRAM", panelAdmin.getStudyProgramCreatorPanel());
         cardPanel.add("CHOOSE CAREER NAME", panelAdmin.getChooseCareerNamePanel());
+        cardPanel.add("SUBJECTS AVAILABLE", subjectsAvailable.getSubjectsAvailablePanel());
+        cardPanel.add("CHOOSE CAREER 2", subjectsAvailable.getChooseCareerPanel()); //el alumno podra elegir carrera de la cual quiere saber las materias
 
         ventana.setLayout(new BorderLayout());
         ventana.add(cardPanel, BorderLayout.CENTER);
@@ -471,6 +475,10 @@ public class VentanaPrincipal {
 
     public static InscriptionPanel getInscriptionPanel() {
         return inscriptionPanel;
+    }
+
+    public static SubjectsAvailable getSubjectsAvailable() {
+        return subjectsAvailable;
     }
 }
 

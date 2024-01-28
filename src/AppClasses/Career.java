@@ -36,6 +36,10 @@ public class Career {
     }
 
     public Integer checkProgressCareer(Student student) {
-           return  planDeEstudio.subjectQuantity() / student.getMateriasAprobadas().size() ;
+        if (planDeEstudio.subjectQuantity() == 0) {
+            return 0;
+        }
+        return  (student.getMateriasAprobadas().size() * 100) / planDeEstudio.subjectQuantity() ;
     }
+
 }

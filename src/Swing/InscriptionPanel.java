@@ -1,9 +1,7 @@
 package Swing;
 
-import AppClasses.Career;
-import AppClasses.Student;
-import AppClasses.StudyProgram;
-import AppClasses.Subject;
+import AppClasses.*;
+
 import javax.imageio.plugins.tiff.TIFFDirectory;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -274,6 +272,7 @@ public class InscriptionPanel extends VentanaPrincipal {
                                     JOptionPane.YES_NO_OPTION);
 
                             if (respuesta == JOptionPane.YES_OPTION) {
+                                JOptionPane.showMessageDialog(null, "Se ha inscripto exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                                 alumnoCliente.addMateriasInscripto(subject);
                             }
                         }
@@ -304,17 +303,19 @@ public class InscriptionPanel extends VentanaPrincipal {
         });
         leftPanel.add(atras);
 
+        JScrollPane scrollPane = new JScrollPane();
         JPanel centerPanel = new JPanel();
+        scrollPane.setViewportView(centerPanel);
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         for (Career career : alumnoCliente.getCursaCarrera()) {
             centerPanel.add(Box.createVerticalStrut(50));
 
-            JLabel materiaNombre = new JLabel(career.getName());
-            materiaNombre.setForeground(Color.white);
-            materiaNombre.setFont(new Font("Arial", 0, 12));
+            JLabel carreraNombre = new JLabel(career.getName());
+            carreraNombre.setForeground(Color.white);
+            carreraNombre.setFont(new Font("Arial", 0, 12));
             centerPanel.add(Box.createVerticalStrut(20));
-            centerPanel.add(materiaNombre);
-            materiaNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+            centerPanel.add(carreraNombre);
+            carreraNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             centerPanel.add(Box.createVerticalStrut(10));
             JProgressBar careerProgress = new JProgressBar(0,100);
@@ -327,10 +328,77 @@ public class InscriptionPanel extends VentanaPrincipal {
             centerPanel.add(careerProgress);;
             centerPanel.add(Box.createVerticalStrut(10));
             careerProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
-        }
+
+            JLabel historia = new JLabel("Historia Academica");
+            historia.setForeground(Color.white);
+            historia.setFont(new Font("Arial", 0,20));
+            centerPanel.add(historia);
+            historia.setAlignmentX(Component.CENTER_ALIGNMENT);
+            centerPanel.add(Box.createVerticalStrut(20));
+
+            if (alumnoCliente.getMateriasAprobadas().isEmpty()) {
+                JLabel sinMaterias = new JLabel("Todavia no tiene materias aprobadas");
+                sinMaterias.setForeground(Color.white);
+                sinMaterias.setFont(new Font("Arial", 0, 16));
+                centerPanel.add(sinMaterias);
+                sinMaterias.setAlignmentX(Component.CENTER_ALIGNMENT);
+                centerPanel.add(Box.createVerticalStrut(15));
+            } else {
+                JLabel materiasAprobadas = new JLabel("Materias aprobadas");
+                materiasAprobadas.setForeground(Color.white);
+                materiasAprobadas.setFont(new Font("Arial", 0, 16));
+                centerPanel.add(materiasAprobadas);
+                materiasAprobadas.setAlignmentX(Component.CENTER_ALIGNMENT);
+                centerPanel.add(Box.createVerticalStrut(15));
+
+                for (RegistroNota registro : alumnoCliente.getMateriasAprobadas()){
+                    JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    rowPanel.setBackground(Color.decode("#292929"));
+                    JLabel materiaNombre = new JLabel(registro.getSubject().getNombre() + ", ");
+                    materiaNombre.setForeground(Color.white);
+                    materiaNombre.setFont(new Font("Arial", 0, 12));
+                    rowPanel.add(materiaNombre);
+
+                    JLabel notaMateriaLabel = new JLabel("Nota: ");
+                    notaMateriaLabel.setForeground(Color.white);
+                    notaMateriaLabel.setFont(new Font("Arial", 0, 12));
+                    rowPanel.add(notaMateriaLabel);
+
+                    JLabel nota = new JLabel(registro.getNota() +"");
+                    nota.setForeground(Color.white);
+                    nota.setFont(new Font("Arial", 0, 12));
+                    rowPanel.add(nota);
+
+
+                    centerPanel.add(rowPanel);
+                    rowPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                }
+
+                if (!alumnoCliente.getCursadasAprobadas().isEmpty()) {
+                    JLabel cursadasAprobadas = new JLabel("Cursadas aprobadas");
+                    cursadasAprobadas.setForeground(Color.white);
+                    cursadasAprobadas.setFont(new Font("Arial", 0, 16));
+                    centerPanel.add(cursadasAprobadas);
+                    cursadasAprobadas.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    centerPanel.add(Box.createVerticalStrut(15));
+
+                    for (RegistroNota registro : alumnoCliente.getCursadasAprobadas()){
+                        JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                        rowPanel.setBackground(Color.decode("#292929"));
+
+                        JLabel materiaNombre = new JLabel(registro.getSubject().getNombre());
+                        materiaNombre.setForeground(Color.white);
+                        materiaNombre.setFont(new Font("Arial", 0, 12));
+                        rowPanel.add(materiaNombre);
+                        centerPanel.add(rowPanel);
+                        rowPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    }
+                }
+            }
+        }   
 
         centerPanel.setBackground(Color.decode("#292929"));
-        progressCareerPanel.add(centerPanel, BorderLayout.CENTER);
+        progressCareerPanel.add(scrollPane, BorderLayout.CENTER);
         progressCareerPanel.add(leftPanel, BorderLayout.WEST);
     }
 
