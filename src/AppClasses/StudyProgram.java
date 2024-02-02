@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public class StudyProgram {
-    private char tipoPlan;
     private Map<Integer, LinkedList<Subject>> programa;
     private static LinkedList<StudyProgram> planesCreados = new LinkedList<>();
     private LinkedList<Subject> allSubjects = new LinkedList<>();
 
-    public StudyProgram(char tipoPlan, Map<Integer, LinkedList<Subject>> programa) {
-        this.tipoPlan = tipoPlan;
+    public StudyProgram(Map<Integer, LinkedList<Subject>> programa) {
         this.programa = programa;
 
         for (int i = 1; i <= programa.size(); i++ ) {
@@ -23,6 +21,7 @@ public class StudyProgram {
 
         planesCreados.add(this);
     }
+
 
     //i es el cuatrimestre
     public LinkedList<Subject> getCuatrimestreList(Integer i) {

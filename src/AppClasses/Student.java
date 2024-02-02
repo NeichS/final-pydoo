@@ -129,5 +129,15 @@ public class Student {
         }
         return null;
     }
+
+    public Boolean isSubjectPassed(Subject subject) {
+        for (RegistroNota registroNota : materiasAprobadas) {
+            if (registroNota.getSubject().getNombre().equals(subject.getNombre())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 

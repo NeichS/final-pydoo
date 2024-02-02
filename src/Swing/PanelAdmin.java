@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.security.cert.CertificateEncodingException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class PanelAdmin extends VentanaPrincipal{
 
@@ -96,26 +97,6 @@ public class PanelAdmin extends VentanaPrincipal{
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.add(Box.createVerticalStrut(20));
 
-        JLabel elegirPlanText = new JLabel("Elegir plan");
-        elegirPlanText.setForeground(Color.white);
-        elegirPlanText.setFont(new Font("Arial", 0 , 12));
-        centerPanel.add(elegirPlanText);
-        elegirPlanText.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        Character[] opciones = {'A', 'B', 'C', 'D', 'E'};
-        JComboBox<Character> tipoPlanOpciones = new JComboBox<>(opciones);
-        tipoPlanOpciones.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                char tipoPlan =(char) tipoPlanOpciones.getSelectedItem();
-            }
-        });
-        centerPanel.add(Box.createVerticalStrut(10));
-        tipoPlanOpciones.setMaximumRowCount(4);
-        tipoPlanOpciones.setMaximumSize(new Dimension(80,35));
-        centerPanel.add(tipoPlanOpciones);
-        tipoPlanOpciones.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 
         JLabel tittle = new JLabel("Agregar materias");
         tittle.setForeground(Color.white);
@@ -157,6 +138,27 @@ public class PanelAdmin extends VentanaPrincipal{
                 centerPanel.add(checkBox);
                 checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+                JLabel elegirPlanText = new JLabel("Elegir tipo de plan");
+                elegirPlanText.setForeground(Color.white);
+                elegirPlanText.setFont(new Font("Arial", 0 , 12));
+                centerPanel.add(elegirPlanText);
+                elegirPlanText.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                char[] tipoPlanMateria = new char[1];
+                Character[] opciones = {'A', 'B', 'C', 'D', 'E'};
+                JComboBox<Character> tipoPlanOpciones = new JComboBox<>(opciones);
+                tipoPlanOpciones.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        tipoPlanMateria[0] = (char) tipoPlanOpciones.getSelectedItem();
+                    }
+                });
+                centerPanel.add(Box.createVerticalStrut(10));
+                tipoPlanOpciones.setMaximumRowCount(4);
+                tipoPlanOpciones.setMaximumSize(new Dimension(80,35));
+                centerPanel.add(tipoPlanOpciones);
+                tipoPlanOpciones.setAlignmentX(Component.CENTER_ALIGNMENT);
+
                 LinkedList<Subject> cuatrimestre = new LinkedList<>();
                 programa.put(numero, cuatrimestre);
 
@@ -166,11 +168,16 @@ public class PanelAdmin extends VentanaPrincipal{
                     public void actionPerformed(ActionEvent e) {
                         String materiaNombre = escribirMateria.getText();
                         Boolean promocionable = checkBox.isSelected();
-                        programa.get(numero).add(new Subject(materiaNombre, promocionable));
+                        if (materiaNombre.isBlank()) {
+                            JOptionPane.showMessageDialog(null, "Debe especificar un nombre para la materia", "Alerta", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            Subject nuevaMateria = new Subject(materiaNombre, promocionable, tipoPlanMateria[0]);
+                            programa.get(numero).add(nuevaMateria);
 
-                        JOptionPane.showMessageDialog(null,"Se ha agregado la materia " + materiaNombre +  " al cuatrimestre " + numero, "Exito" , JOptionPane.INFORMATION_MESSAGE);
-                        escribirMateria.setText("");
-                        checkBox.setSelected(false);
+                            JOptionPane.showMessageDialog(null,"Se ha agregado la materia " + materiaNombre +  " al cuatrimestre " + numero, "Exito" , JOptionPane.INFORMATION_MESSAGE);
+                            escribirMateria.setText("");
+                            checkBox.setSelected(false);
+                        }
                     }
                 });
                 centerPanel.add(Box.createVerticalStrut(10));
@@ -207,7 +214,7 @@ public class PanelAdmin extends VentanaPrincipal{
 
                 if (respuesta == JOptionPane.YES_OPTION) {
                     JOptionPane.showMessageDialog(null,"Se ha creado el nuevo plan de estudio" , "Exito" , JOptionPane.INFORMATION_MESSAGE);
-                    StudyProgram program = new StudyProgram((char) tipoPlanOpciones.getSelectedItem(), programa);
+                    StudyProgram program = new StudyProgram(programa);
                     createCareerCreator(program);
                     cardLayout.show(cardPanel, "CREATE CAREER");
                 }
@@ -243,8 +250,9 @@ public class PanelAdmin extends VentanaPrincipal{
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(Color.decode("#292929"));
         centerPanel.add(Box.createVerticalStrut(20));
-
         centerPanel.add(Box.createVerticalStrut(20));
+
+        boolean alreadyShown = false;
         for (int i = 1; i <= programa.getPrograma().size(); i++) {
             centerPanel.add(Box.createVerticalStrut(20));
             JLabel tittleCuatrimestre = new JLabel("Cuatrimestre " + i );
@@ -290,10 +298,11 @@ public class PanelAdmin extends VentanaPrincipal{
                     subjectRowPanel.add(agregarCorrelativa);
                     centerPanel.add(subjectRowPanel);
                     subjectRowPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                } else {
+                } else if (!alreadyShown){
+                    alreadyShown = true;
                     JLabel message = new JLabel("No puede asignar correlativas al primer cuatrimestre");
                     message.setForeground(Color.white);
-                    message.setFont(new Font("Arial", 0, 12));
+                    message.setFont(new Font("Arial", Font.BOLD, 12));
                     centerPanel.add(message);
                     message.setAlignmentX(Component.CENTER_ALIGNMENT);
                 }

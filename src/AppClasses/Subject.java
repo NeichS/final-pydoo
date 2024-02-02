@@ -1,5 +1,6 @@
 package AppClasses;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +10,7 @@ public class Subject  {
     public static LinkedList<Subject> listaMaterias = new LinkedList<>(); //lista de materias que existen
     private String nombre;
     private LinkedList<Subject> correlativas;
+    private char tipoCorrelativa;
 
     private static Integer subjectIdSerial = 0;
     private Integer subjectId;
@@ -22,20 +24,12 @@ public class Subject  {
         };
         return false;
     }
-
-    public Subject(String nombre, Boolean promocion) {
-        this.nombre = nombre;
-        this.promocion = promocion;
-        this.subjectId = subjectIdSerial +1;
-        this.correlativas = null;
-        subjectIdSerial++;
-        listaMaterias.add(this);
-    }
     public Subject(String nombre, LinkedList<Subject> correlativas) {
         this.nombre = nombre;
         this.correlativas = correlativas;
         this.promocion = false;
         this.subjectId = subjectIdSerial + 1;
+        this.tipoCorrelativa = 'A'; //por defecto el tipo correlativa es que por lo menos hayan aprobado las cursadas
 
         subjectIdSerial++;
         listaMaterias.add(this);
@@ -45,6 +39,26 @@ public class Subject  {
         this.correlativas = correlativas;
         this.promocion = promocion;
         this.subjectId = subjectIdSerial + 1;
+        this.tipoCorrelativa = 'A';
+
+        subjectIdSerial++;
+        listaMaterias.add(this);
+    }
+    public Subject(String nombre, LinkedList<Subject> correlativas, boolean promocion, char tipoCorrelativa) {
+        this.nombre = nombre;
+        this.correlativas = correlativas;
+        this.promocion = promocion;
+        this.subjectId = subjectIdSerial + 1;
+        this.tipoCorrelativa = tipoCorrelativa;
+
+        subjectIdSerial++;
+        listaMaterias.add(this);
+    }
+
+    public Subject(String nombre, Boolean promocion, char tipoCorrelativa) {
+        this.nombre = nombre;
+        this.promocion = promocion;
+        this.tipoCorrelativa = tipoCorrelativa;
 
         subjectIdSerial++;
         listaMaterias.add(this);
@@ -87,8 +101,8 @@ public class Subject  {
 
     public Boolean promociona(Student student) {
         RegistroNota registro = student.getRegistroMateria(this);
-        if (student.getCursadasAprobadas().contains(this) && this.promocion && (registro.getNota() >= 7)) {
-            return true;
+        if (registro != null) {
+            return this.promocion && (registro.getNota() >= 7);
         } else {
             return false;
         }
@@ -109,7 +123,7 @@ public class Subject  {
 
     public static Subject getSubjectByStringName(String nombre) {
         for (Subject subject : listaMaterias) {
-            if (nombre == subject.getNombre()) {
+            if (subject.getNombre().equals(nombre)) {
                 return subject;
             }
         }
@@ -117,5 +131,9 @@ public class Subject  {
     }
     public Boolean getPromocion() {
         return promocion;
+    }
+
+    public char getTipoCorrelativa() {
+        return tipoCorrelativa;
     }
 }

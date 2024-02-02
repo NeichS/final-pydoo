@@ -395,7 +395,7 @@ public class InscriptionPanel extends VentanaPrincipal {
                     }
                 }
             }
-        }   
+        }
 
         centerPanel.setBackground(Color.decode("#292929"));
         progressCareerPanel.add(scrollPane, BorderLayout.CENTER);

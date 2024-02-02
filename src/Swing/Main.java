@@ -115,10 +115,10 @@ public class Main {
         programaSistemas.put(5, quintoCuatrimestre);
         programaSistemas.put(6, sextoCuatrimestre);
 
-        StudyProgram sistemasPrograma = new StudyProgram('A', programaSistemas);
+        StudyProgram sistemasPrograma = new StudyProgram(programaSistemas);
 
         Career LicSistemas = new Career("Licenciatura en Sistemas", sistemasPrograma);
-        Career LicEconomia = new Career("Lic en Economia", new StudyProgram('A', new HashMap<>()));
+        Career LicEconomia = new Career("Lic en Economia", new StudyProgram(new HashMap<>()));
 
         alumnoUno.addMateriaAprobada(algebra, 9);
         alumnoUno.addMateriaAprobada(analisisMatematico, 8);
