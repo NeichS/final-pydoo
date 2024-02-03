@@ -249,32 +249,36 @@ public class InscriptionPanel extends VentanaPrincipal {
                 }
                 botonMateria.addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!alumnoCliente.correlativasCheck(subject)) {
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    "No comple con las correlativas correspondientes para la materia " + subject,
-                                    "Alerta",
-                                    JOptionPane.WARNING_MESSAGE);
-                        } else if (alumnoCliente.getMateriasInscripto().contains(subject)) {
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    "Ya se encuentra inscripto a la materia " + subject,
-                                    "Alerta",
-                                    JOptionPane.WARNING_MESSAGE);
-                        }
-                        else {
-                            // Mostrar un cuadro de confirmación
-                            int respuesta = JOptionPane.showConfirmDialog(
-                                    null,
-                                    "¿Desea inscribirse a la materia " + subject + "?",
-                                    "Confirmación",
-                                    JOptionPane.YES_NO_OPTION);
-
-                            if (respuesta == JOptionPane.YES_OPTION) {
-                                JOptionPane.showMessageDialog(null, "Se ha inscripto exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                                alumnoCliente.addMateriasInscripto(subject);
+                    public void actionPerformed(ActionEvent e)   {
+                        try {
+                            if (!selectedCareer.checkCorrelativas(alumnoCliente, subject)) {
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        "No cumple con las correlativas correspondientes para la materia " + subject,
+                                        "Alerta",
+                                        JOptionPane.WARNING_MESSAGE);
+                            } else if (alumnoCliente.getMateriasInscripto().contains(subject)) {
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        "Ya se encuentra inscripto a la materia " + subject,
+                                        "Alerta",
+                                        JOptionPane.WARNING_MESSAGE);
                             }
+                            else {
+                                // Mostrar un cuadro de confirmación
+                                int respuesta = JOptionPane.showConfirmDialog(
+                                        null,
+                                        "¿Desea inscribirse a la materia " + subject + "?",
+                                        "Confirmación",
+                                        JOptionPane.YES_NO_OPTION);
+
+                                if (respuesta == JOptionPane.YES_OPTION) {
+                                    JOptionPane.showMessageDialog(null, "Se ha inscripto exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                                    alumnoCliente.addMateriasInscripto(subject);
+                                }
+                            }
+                        } catch (CantidadCuatrimestreException ex) {
+                            throw new RuntimeException(ex);
                         }
                     }
                 });

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RecursiveTask;
 
 public class Career {
 
@@ -43,9 +44,15 @@ public class Career {
         return  (student.getMateriasAprobadas().size() * 100) / planDeEstudio.subjectQuantity() ;
     }
     private Boolean cursadasAprobadas(Student student, Subject subject) {
+        if (subject.getCorrelativas().isEmpty()) {
+            return true;
+        }
         return student.getCursadasAprobadasSinNota().contains(subject.getCorrelativas());
     }
     private Boolean materiasAprobadas(Student student, Subject subject) {
+        if (subject.getCorrelativas().isEmpty()) { //contempla el caso de que no tenga correlativas
+            return true;
+        }
         return student.getMateriasArobadasSinNota().contains(subject.getCorrelativas());
     }
 

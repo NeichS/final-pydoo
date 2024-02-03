@@ -1,5 +1,6 @@
 package Swing;
 
+import AppClasses.CantidadCuatrimestreException;
 import AppClasses.Career;
 import AppClasses.Student;
 import AppClasses.Subject;
@@ -47,7 +48,11 @@ public class SubjectsAvailable extends VentanaPrincipal{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     selectedCareer = career; // Almacena la carrera seleccionada en la variable
-                    createSubjectsAvailablePanel();
+                    try {
+                        createSubjectsAvailablePanel();
+                    } catch (CantidadCuatrimestreException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     cardLayout.show(cardPanel, "SUBJECTS AVAILABLE");
                 }
             });
@@ -62,7 +67,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
         super(var);
     }
 
-    public void createSubjectsAvailablePanel() {
+    public void createSubjectsAvailablePanel() throws CantidadCuatrimestreException {
         subjectsAvailablePanel.setBackground(Color.decode("#292929"));
         subjectsAvailablePanel.setLayout(new BorderLayout());
         JPanel topPanel = customPanelTop("Materias a las que se puede inscribir");
@@ -86,7 +91,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
         centerPanel.add(Box.createVerticalStrut(30));
 
         for (Subject subject : selectedCareer.getPlanDeEstudio().getAllSubjects()) {
-            if (alumnoCliente.correlativasCheck(subject)) {
+            if (selectedCareer.checkCorrelativas(alumnoCliente, subject)) {
                 JLabel materiaInscribible = new JLabel(subject.getNombre());
                 materiaInscribible.setForeground(Color.white);
                 materiaInscribible.setFont(new Font("Arial", 0, 16));
@@ -95,10 +100,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
                 centerPanel.add(Box.createVerticalStrut(20));
             }
         }
-
         subjectsAvailablePanel.add(centerPanel, BorderLayout.CENTER);
-
-
     }
 
     public JPanel getSubjectsAvailablePanel() {
