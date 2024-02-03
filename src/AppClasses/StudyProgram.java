@@ -21,8 +21,6 @@ public class StudyProgram {
 
         planesCreados.add(this);
     }
-
-
     //i es el cuatrimestre
     public LinkedList<Subject> getCuatrimestreList(Integer i) {
         return programa.get(i);
@@ -40,8 +38,8 @@ public class StudyProgram {
             }
         return counter;
     }
-
     public LinkedList<Subject> getAllSubjects() {
         return allSubjects;
     }
+
 }

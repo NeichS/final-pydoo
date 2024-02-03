@@ -1,5 +1,6 @@
 package AppClasses;
 
+import javax.swing.text.StyledEditorKit;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,5 +42,56 @@ public class Career {
         }
         return  (student.getMateriasAprobadas().size() * 100) / planDeEstudio.subjectQuantity() ;
     }
+    private Boolean cursadasAprobadas(Student student, Subject subject) {
+        return student.getCursadasAprobadasSinNota().contains(subject.getCorrelativas());
+    }
+    private Boolean materiasAprobadas(Student student, Subject subject) {
+        return student.getMateriasArobadasSinNota().contains(subject.getCorrelativas());
+    }
+
+    private Boolean cuatrimestresAprobados(Integer num, Student student, Subject subject ) throws CantidadCuatrimestreException {
+        Map<Integer, LinkedList<Subject>> programa = this.planDeEstudio.getPrograma();
+
+        Integer cuatrimestreMateria = 0;
+        int i = 1;
+        //primero tengo que encontrar el cuatrimestre al que pertenece la materia
+        while (cuatrimestreMateria != 0 || i <= programa.size()) {
+            for (Subject otroSubject : programa.get(i)) {
+                if (otroSubject == subject) {
+                    cuatrimestreMateria = i;
+                    break;
+                }
+            }
+            i++;
+        }
+
+        int beginning = i - num; //empiezo a revisar los cuatrimestres
+        if (beginning < 1) {
+            beginning = 1;
+            throw new CantidadCuatrimestreException(num);
+        }
+        for (int inicio = beginning; inicio < i; inicio++) {
+            if (!student.getMateriasArobadasSinNota().contains(programa.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public Boolean checkCorrelativas(Student student, Subject subject) throws CantidadCuatrimestreException {
+        switch (subject.getTipoCorrelativa()) {
+            case 'A':
+                return cursadasAprobadas(student, subject) || materiasAprobadas(student, subject);
+            case 'B':
+                return materiasAprobadas(student, subject);
+            case 'C':
+                return (cursadasAprobadas(student, subject) && cuatrimestresAprobados(5, student, subject));
+            case 'D':
+                return (cursadasAprobadas(student, subject) && cuatrimestresAprobados(3, student, subject));
+            case 'E':
+                return (materiasAprobadas(student, subject) && cuatrimestresAprobados(3, student, subject));
+            default:
+                return false;
+            }
+        }
 
 }

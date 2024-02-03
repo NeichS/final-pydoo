@@ -10,11 +10,12 @@ public class Subject  {
     public static LinkedList<Subject> listaMaterias = new LinkedList<>(); //lista de materias que existen
     private String nombre;
     private LinkedList<Subject> correlativas;
-    private char tipoCorrelativa;
 
     private static Integer subjectIdSerial = 0;
     private Integer subjectId;
     private boolean promocion;
+
+    private char tipoCorrelativa;
 
     public static boolean existeId(Integer id) {
         for (Subject subject : listaMaterias) {
@@ -34,27 +35,6 @@ public class Subject  {
         subjectIdSerial++;
         listaMaterias.add(this);
     }
-    public Subject(String nombre, LinkedList<Subject> correlativas, boolean promocion) {
-        this.nombre = nombre;
-        this.correlativas = correlativas;
-        this.promocion = promocion;
-        this.subjectId = subjectIdSerial + 1;
-        this.tipoCorrelativa = 'A';
-
-        subjectIdSerial++;
-        listaMaterias.add(this);
-    }
-    public Subject(String nombre, LinkedList<Subject> correlativas, boolean promocion, char tipoCorrelativa) {
-        this.nombre = nombre;
-        this.correlativas = correlativas;
-        this.promocion = promocion;
-        this.subjectId = subjectIdSerial + 1;
-        this.tipoCorrelativa = tipoCorrelativa;
-
-        subjectIdSerial++;
-        listaMaterias.add(this);
-    }
-
     public Subject(String nombre, Boolean promocion, char tipoCorrelativa) {
         this.nombre = nombre;
         this.promocion = promocion;

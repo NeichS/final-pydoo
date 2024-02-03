@@ -9,9 +9,11 @@ public class Student {
     private LinkedList<RegistroNota> cursadasAprobadas = new LinkedList<>(); //con parcial aprobado
     private LinkedList<RegistroNota> materiasAprobadas = new LinkedList<>(); //con final aprobado o parcial promocionado
 
+    private LinkedList<Subject> materiasArobadasSinNota = new LinkedList<>(); //la materia aprobada sin mas
     private LinkedList<Career> cursaCarrera = new LinkedList<>();
     private LinkedList<Subject> materiasInscripto = new LinkedList<>();
 
+    private LinkedList<Subject> cursadasAprobadasSinNota = new LinkedList<>();
 
     public Student(String nombre, String apellido, String mail, char[] contrasenha) {
         this.nombre = nombre;
@@ -63,22 +65,16 @@ public class Student {
     }
 
     //Hace falta implementar un strategy para analizar las correlativas dependiendo del tipo de plan
-    public boolean correlativasCheck(Subject materia){
+    /*public boolean correlativasCheck(Subject materia){
         for (Subject subject : materia.getCorrelativas())
             if (!materiasAprobadas.contains(subject)) {
                 return false;
             }
         return true;
-    }
+    }*/
     public void addMateriaAprobada(Subject materia, Integer nota) {
-        if (correlativasCheck(materia)) {
-            materiasAprobadas.add(new RegistroNota(materia, nota));
-            if (cursadasAprobadas.contains(materia)) {
-                cursadasAprobadas.remove(materia);
-            }
-        } else {
-            //System.out.println("No cumple con las correlativas para aprobar la materia " + materia);
-        }
+        materiasAprobadas.add(new RegistroNota(materia, nota));
+        materiasArobadasSinNota.add(materia);
     }
 
     public void addCursadaAprobada(Subject materia, Integer nota) {
@@ -87,6 +83,7 @@ public class Student {
             addMateriaAprobada(materia, nota);
         } else {
             addCursadaAprobada(materia, nota);
+            cursadasAprobadasSinNota.add(materia);
         }
 
         cursadasAprobadas.add(new RegistroNota(materia, nota));
@@ -139,5 +136,12 @@ public class Student {
         return false;
     }
 
+    public LinkedList<Subject> getMateriasArobadasSinNota() {
+        return materiasArobadasSinNota;
+    }
+
+    public LinkedList<Subject> getCursadasAprobadasSinNota() {
+        return cursadasAprobadasSinNota;
+    }
 }
 
