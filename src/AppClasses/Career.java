@@ -56,7 +56,7 @@ public class Career {
         return student.getMateriasArobadasSinNota().contains(subject.getCorrelativas());
     }
 
-    private Boolean cuatrimestresAprobados(Integer num, Student student, Subject subject ) throws CantidadCuatrimestreException {
+    private Boolean cuatrimestresAprobados(Integer num, Student student, Subject subject )  {
         Map<Integer, LinkedList<Subject>> programa = this.planDeEstudio.getPrograma();
 
         Integer cuatrimestreMateria = 0;
@@ -75,7 +75,6 @@ public class Career {
         int beginning = i - num; //empiezo a revisar los cuatrimestres
         if (beginning < 1) {
             beginning = 1;
-            throw new CantidadCuatrimestreException(num);
         }
         for (int inicio = beginning; inicio < i; inicio++) {
             if (!student.getMateriasArobadasSinNota().contains(programa.get(i))) {
@@ -84,7 +83,7 @@ public class Career {
         }
         return true;
     }
-    public Boolean checkCorrelativas(Student student, Subject subject) throws CantidadCuatrimestreException {
+    public Boolean checkCorrelativas(Student student, Subject subject)  {
         switch (subject.getTipoCorrelativa()) {
             case 'A':
                 return cursadasAprobadas(student, subject) || materiasAprobadas(student, subject);

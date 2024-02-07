@@ -250,7 +250,6 @@ public class InscriptionPanel extends VentanaPrincipal {
                 botonMateria.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e)   {
-                        try {
                             if (!selectedCareer.checkCorrelativas(alumnoCliente, subject)) {
                                 JOptionPane.showMessageDialog(
                                         null,
@@ -277,9 +276,6 @@ public class InscriptionPanel extends VentanaPrincipal {
                                     alumnoCliente.addMateriasInscripto(subject);
                                 }
                             }
-                        } catch (CantidadCuatrimestreException ex) {
-                            throw new RuntimeException(ex);
-                        }
                     }
                 });
                 centerPanel.add(botonMateria);

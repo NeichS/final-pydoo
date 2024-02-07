@@ -15,7 +15,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
     private JPanel subjectsAvailablePanel = new JPanel();
     private JPanel chooseCareerPanel = new JPanel();
     private Student alumnoCliente;
-    private Career selectedCareer;
+
 
 
     public void createChooseCareerPanel(Student alumno) {
@@ -44,15 +44,12 @@ public class SubjectsAvailable extends VentanaPrincipal{
         for (Career career : alumnoCliente.getCursaCarrera()) {
             String textBoton = career.getName();
             CustomButton boton = new CustomButton(textBoton, "#474747", 220);
+            final Career[] selectedCareer = new Career[1]; //la convierto en un arreglo constante para poder usarlo dentro del  actionListener
             boton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    selectedCareer = career; // Almacena la carrera seleccionada en la variable
-                    try {
-                        createSubjectsAvailablePanel();
-                    } catch (CantidadCuatrimestreException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    selectedCareer[0] = career;
+                    createSubjectsAvailablePanel(selectedCareer[0]);
                     cardLayout.show(cardPanel, "SUBJECTS AVAILABLE");
                 }
             });
@@ -67,7 +64,10 @@ public class SubjectsAvailable extends VentanaPrincipal{
         super(var);
     }
 
-    public void createSubjectsAvailablePanel() throws CantidadCuatrimestreException {
+    public void createSubjectsAvailablePanel(Career selectedCareer)  {
+        subjectsAvailablePanel.removeAll();
+        subjectsAvailablePanel.revalidate();
+        subjectsAvailablePanel.repaint();
         subjectsAvailablePanel.setBackground(Color.decode("#292929"));
         subjectsAvailablePanel.setLayout(new BorderLayout());
         JPanel topPanel = customPanelTop("Materias a las que se puede inscribir");
