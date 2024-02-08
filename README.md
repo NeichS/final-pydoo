@@ -1,15 +1,15 @@
-Instancias de alumno:
+:student:  Instancias de alumno: 
 
 Algunas materias aprobadas
-mail : nachoagusss1@gmail.com 
-pass : 12345 
+:e-mail: mail : nachoagusss1@gmail.com 
+:key:  pass : 12345 
 
 Ninguna materia aprobada
-mail : juan.perez@mail.com
-pass : 123456
+:e-mail: mail : juan.perez@mail.com
+:key: pass : 123456
 
 Todas las materias aprobadas
-mail : maria.garcia@mail.com
-pass : abcdef
+:e-mail: mail : maria.garcia@mail.com
+:key: pass : abcdef
 
 
