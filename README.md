@@ -32,3 +32,7 @@ Ninguna materia aprobada ni inscripto a ninguna carrera
 ------------------------
 
 ADMIN PASS :shield: --> 1234
+
+------------------------
+
+Se crearon 2 carreras, Lic en Sistemas :computer:  y Lic en Economia :bank:  
