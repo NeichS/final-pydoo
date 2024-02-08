@@ -1,11 +1,7 @@
 package AppClasses;
 
-import javax.swing.text.StyledEditorKit;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.RecursiveTask;
 
 public class Career {
 
