@@ -16,6 +16,34 @@ public class Subject  {
     private boolean promocion;
 
     private char tipoCorrelativa;
+    public Subject(String nombre, Boolean promocion) {
+        this.nombre = nombre;
+        this.promocion = promocion;
+        subjectIdSerial++;
+        this.subjectId = subjectIdSerial;
+
+        listaMaterias.add(this);
+    }
+
+    public Subject(String nombre, LinkedList<Subject> correlativas) {
+        this.nombre = nombre;
+        this.correlativas = correlativas;
+        this.promocion = false;
+        subjectIdSerial++;
+        this.subjectId = subjectIdSerial;
+        this.tipoCorrelativa = 'A'; //por defecto el tipo correlativa es que por lo menos hayan aprobado las cursadas
+
+        listaMaterias.add(this);
+    }
+    public Subject(String nombre, Boolean promocion, char tipoCorrelativa) {
+        this.nombre = nombre;
+        this.promocion = promocion;
+        this.tipoCorrelativa = tipoCorrelativa;
+        subjectIdSerial++;
+        this.subjectId = subjectIdSerial;
+
+        listaMaterias.add(this);
+    }
 
     public static boolean existeId(Integer id) {
         for (Subject subject : listaMaterias) {
@@ -25,25 +53,6 @@ public class Subject  {
         };
         return false;
     }
-    public Subject(String nombre, LinkedList<Subject> correlativas) {
-        this.nombre = nombre;
-        this.correlativas = correlativas;
-        this.promocion = false;
-        this.subjectId = subjectIdSerial + 1;
-        this.tipoCorrelativa = 'A'; //por defecto el tipo correlativa es que por lo menos hayan aprobado las cursadas
-
-        subjectIdSerial++;
-        listaMaterias.add(this);
-    }
-    public Subject(String nombre, Boolean promocion, char tipoCorrelativa) {
-        this.nombre = nombre;
-        this.promocion = promocion;
-        this.tipoCorrelativa = tipoCorrelativa;
-
-        subjectIdSerial++;
-        listaMaterias.add(this);
-    }
-
     public static Subject getSubjectById(Integer subjectId) {
         for (Subject subject : listaMaterias) {
             if (Objects.equals(subject.subjectId, subjectId)) {

@@ -2,14 +2,11 @@ package Swing;
 
 import AppClasses.*;
 
-import javax.imageio.plugins.tiff.TIFFDirectory;
+import javax.print.attribute.standard.JobKOctets;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class InscriptionPanel extends VentanaPrincipal {
@@ -234,7 +231,7 @@ public class InscriptionPanel extends VentanaPrincipal {
         StudyProgram plan = selectedCareer.getPlanDeEstudio();
         JLabel label = new JLabel();
 
-        for (int i = 1; i <= plan.getPrograma().size(); i++) {
+        for (int i = 1; i <= plan.getProgram().size(); i++) {
             JLabel titulo = new JLabel("Cuatrimestre " + i);
             titulo.setForeground(Color.white);
             titulo.setFont(new Font("Arial", 0, 12));
@@ -244,9 +241,6 @@ public class InscriptionPanel extends VentanaPrincipal {
             titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
             for (Subject subject : plan.getCuatrimestreList(i)) {
                 JButton botonMateria = new CustomButton(subject + "", "#474747", 340);
-                if (alumnoCliente.getCursadasAprobadas().contains(subject)) {
-                    botonMateria.setEnabled(false);
-                }
                 botonMateria.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e)   {
@@ -283,6 +277,45 @@ public class InscriptionPanel extends VentanaPrincipal {
                 centerPanel.add(Box.createVerticalStrut(5));
             }
         }
+        if (!plan.getAllOptativeSubjects().isEmpty()) {
+            centerPanel.add(Box.createVerticalStrut(20));
+            JLabel materiasOptativas = new JLabel("Materias optativas");
+            materiasOptativas.setForeground(Color.YELLOW);
+            materiasOptativas.setFont(new Font("Arial", 0, 12));
+            centerPanel.add(materiasOptativas);
+            materiasOptativas.setAlignmentX(Component.CENTER_ALIGNMENT);
+            for (OptativeSubject optativeSubject : plan.getAllOptativeSubjects()) {
+                centerPanel.add(Box.createVerticalStrut(3));
+                JButton botonMateria = new CustomButton(optativeSubject + "", "#474747", 340);
+                botonMateria.addActionListener(e -> {
+                    if (alumnoCliente.getMateriasInscripto().contains(optativeSubject)) {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Ya se encuentra inscripto a la materia " + optativeSubject,
+                                "Alerta",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                    else {
+                        // Mostrar un cuadro de confirmación
+                        int respuesta = JOptionPane.showConfirmDialog(
+                                null,
+                                "¿Desea inscribirse a la materia " + optativeSubject + "?",
+                                "Confirmación",
+                                JOptionPane.YES_NO_OPTION);
+
+                        if (respuesta == JOptionPane.YES_OPTION) {
+                            JOptionPane.showMessageDialog(null, "Se ha inscripto exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                            alumnoCliente.addMateriasInscripto(optativeSubject);
+                        }
+                    }
+                });
+                centerPanel.add(botonMateria);
+                botonMateria.setAlignmentX(Component.CENTER_ALIGNMENT);
+                centerPanel.add(Box.createVerticalStrut(10));
+            }
+        }
+
+
         // Agregar el JScrollPane al inscriptionSubjectPanel en lugar del centerPanel directamente
         inscriptionSubjectPanel.add(scrollPane, BorderLayout.CENTER);
         inscriptionSubjectPanel.add(leftPanel, BorderLayout.WEST);
@@ -363,6 +396,12 @@ public class InscriptionPanel extends VentanaPrincipal {
                     materiaNombre.setForeground(Color.white);
                     materiaNombre.setFont(new Font("Arial", 0, 12));
                     rowPanel.add(materiaNombre);
+                    if (registro.getSubject() instanceof OptativeSubject) {
+                        JLabel optativa = new JLabel("Optativa");
+                        optativa.setFont(new Font("Arial",0,12));
+                        optativa.setForeground(Color.YELLOW);
+                        rowPanel.add(optativa);
+                    }
 
                     JLabel notaMateriaLabel = new JLabel("Nota: ");
                     notaMateriaLabel.setForeground(Color.white);

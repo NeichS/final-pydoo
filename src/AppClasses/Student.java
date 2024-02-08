@@ -63,14 +63,6 @@ public class Student {
         return false;
     }
 
-    //Hace falta implementar un strategy para analizar las correlativas dependiendo del tipo de plan
-    /*public boolean correlativasCheck(Subject materia){
-        for (Subject subject : materia.getCorrelativas())
-            if (!materiasAprobadas.contains(subject)) {
-                return false;
-            }
-        return true;
-    }*/
     public void addMateriaAprobada(Subject materia, Integer nota) {
         materiasAprobadas.add(new RegistroNota(materia, nota));
         materiasAprobadasSinNota.add(materia);
@@ -113,7 +105,7 @@ public class Student {
     public LinkedList<RegistroNota> getMateriasAprobadasUnicaCarrera(Career career) {
         LinkedList<RegistroNota> materiasAprobadasCarrera = new LinkedList<>();
         for (RegistroNota registroNota : materiasAprobadas) {
-            if (career.getPlanDeEstudio().getAllSubjects().contains(registroNota.getSubject())){
+            if (career.getPlanDeEstudio().getAllSubjects().contains(registroNota.getSubject()) || career.getPlanDeEstudio().getAllOptativeSubjects().contains(registroNota.getSubject())){
                 materiasAprobadasCarrera.add(registroNota);
             }
         }

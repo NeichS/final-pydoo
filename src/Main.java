@@ -1,7 +1,4 @@
-import AppClasses.Career;
-import AppClasses.Student;
-import AppClasses.StudyProgram;
-import AppClasses.Subject;
+import AppClasses.*;
 import Swing.VentanaPrincipal;
 
 import javax.swing.*;
@@ -115,8 +112,14 @@ public class Main {
 
         StudyProgram sistemasPrograma = new StudyProgram(programaSistemas);
 
-        Career LicSistemas = new Career("Licenciatura en Sistemas", sistemasPrograma);
-        Career LicEconomia = new Career("Lic en Economia", new StudyProgram(new HashMap<>()));
+
+
+        Career licSistemas = new Career("Licenciatura en Sistemas", sistemasPrograma);
+        OptativeSubject inteligArtificial = new OptativeSubject("Inteligencia artificial I", false);
+        licSistemas.addOptativeSubject(inteligArtificial);
+        licSistemas.getPlanDeEstudio().setOptativeMinimun(1);
+
+        Career licEconomia = new Career("Lic en Economia", new StudyProgram(new HashMap<>()));
 
         alumnoUno.addMateriaAprobada(algebra, 9);
         alumnoUno.addMateriaAprobada(analisisMatematico, 8);
@@ -124,19 +127,21 @@ public class Main {
         alumnoUno.addMateriaAprobada(estadistica, 5 );
         alumnoUno.addMateriaAprobada(algoritmicaProgramacionI ,10 );
 
-        alumnoUno.setCursaCarrera(LicSistemas);
+        alumnoUno.setCursaCarrera(licSistemas);
         //alumnoUno.setCursaCarrera(LicEconomia);
 
 
         Student alumnoDos = new Student("Juan", "Pérez", "juan.perez@mail.com", "123456".toCharArray());
         Student alumnoTres = new Student("María", "García", "maria.garcia@mail.com", "abcdef".toCharArray());
 
-        alumnoDos.setCursaCarrera(LicSistemas);
+        alumnoDos.setCursaCarrera(licSistemas);
 
-        alumnoTres.setCursaCarrera(LicSistemas);
-        for (Subject subject : LicSistemas.getPlanDeEstudio().getAllSubjects()) {
+        alumnoTres.setCursaCarrera(licSistemas);
+        for (Subject subject : licSistemas.getPlanDeEstudio().getAllSubjects()) {
             alumnoTres.addMateriaAprobada(subject, 10);
         }
+
+        alumnoTres.addMateriaAprobada(inteligArtificial, 10);
 
     }
     public static void main(String[] args) {

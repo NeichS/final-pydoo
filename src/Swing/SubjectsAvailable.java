@@ -1,6 +1,7 @@
 package Swing;
 
 import AppClasses.Career;
+import AppClasses.OptativeSubject;
 import AppClasses.Student;
 import AppClasses.Subject;
 
@@ -88,6 +89,14 @@ public class SubjectsAvailable extends VentanaPrincipal{
                 materiaInscribible.setAlignmentX(Component.CENTER_ALIGNMENT);
                 centerPanel.add(Box.createVerticalStrut(20));
             }
+        }
+        for (OptativeSubject optativeSubject : selectedCareer.getPlanDeEstudio().getAllOptativeSubjects()) {
+            JLabel materiaInscribible = new JLabel(optativeSubject.getNombre());
+            materiaInscribible.setForeground(Color.YELLOW);
+            materiaInscribible.setFont(new Font("Arial", 0, 16));
+            centerPanel.add(materiaInscribible);
+            materiaInscribible.setAlignmentX(Component.CENTER_ALIGNMENT);
+            centerPanel.add(Box.createVerticalStrut(20));
         }
         scrollPane.setViewportView(centerPanel);
         subjectsAvailablePanel.add(scrollPane, BorderLayout.CENTER);

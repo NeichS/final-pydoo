@@ -6,7 +6,6 @@ import java.util.Map;
 public class Career {
 
     private static LinkedList<Career> careers = new LinkedList<>();
-
     private StudyProgram planDeEstudio;
     private String name;
 
@@ -37,7 +36,7 @@ public class Career {
         if (planDeEstudio.subjectQuantity() == 0) {
             return 0;
         }
-        return  (student.getMateriasAprobadasUnicaCarrera(this).size() * 100) / planDeEstudio.subjectQuantity() ;
+        return  (student.getMateriasAprobadasUnicaCarrera(this).size() * 100) / (planDeEstudio.subjectQuantity() + planDeEstudio.getOptativeMinimun());
     }
     private Boolean cursadasAprobadas(Student student, Subject subject) {
         if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty()) {
@@ -63,7 +62,7 @@ public class Career {
     }
 
     private Boolean cuatrimestresAprobados(Integer num, Student student, Subject subject )  {
-        Map<Integer, LinkedList<Subject>> programa = this.planDeEstudio.getPrograma();
+        Map<Integer, LinkedList<Subject>> programa = this.planDeEstudio.getProgram();
 
         Integer cuatrimestreMateria = 0;
         int i = 1;
@@ -104,6 +103,10 @@ public class Career {
             default:
                 return false;
             }
+        }
+
+        public void addOptativeSubject(OptativeSubject subject) {
+            this.planDeEstudio.addOptativeSubject(subject);
         }
 
 }

@@ -1,16 +1,16 @@
 package AppClasses;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class StudyProgram {
-    private Map<Integer, LinkedList<Subject>> programa;
-    private LinkedList<Subject> allSubjects = new LinkedList<>();
+    private Map<Integer, LinkedList<Subject>> program;
+    private LinkedList<Subject> allSubjects = new LinkedList<>(); //todas las materias obligatorias de la carrera
+    private LinkedList<OptativeSubject> allOptativeSubjects = new LinkedList<>(); //todas las materias optativas de la carrera
+    private Integer optativeMinimun = 0; //cantidad minima de optativas aprobadas para recibirse
 
     public StudyProgram(Map<Integer, LinkedList<Subject>> programa) {
-        this.programa = programa;
+        this.program = programa;
 
         for (int i = 1; i <= programa.size(); i++ ) {
             for (Subject subject : programa.get(i)) {
@@ -20,18 +20,18 @@ public class StudyProgram {
     }
     //i es el cuatrimestre
     public LinkedList<Subject> getCuatrimestreList(Integer i) {
-        return programa.get(i);
+        return program.get(i);
     }
 
-    public Map<Integer, LinkedList<Subject>> getPrograma() {
-        return programa;
+    public Map<Integer, LinkedList<Subject>> getProgram() {
+        return program;
     }
 
     public int subjectQuantity() {
-        int max = programa.size();
+        int max = program.size();
         int counter = 0;
         for (int i = 1 ; i <= max ; i++) {
-            counter = counter + programa.get(i).size();
+            counter = counter + program.get(i).size();
             }
         return counter;
     }
@@ -39,4 +39,18 @@ public class StudyProgram {
         return allSubjects;
     }
 
+    public LinkedList<OptativeSubject> getAllOptativeSubjects() {
+        return allOptativeSubjects;
+    }
+
+    public void addSubject(Integer num , Subject subject) {
+        program.get(num).add(subject);
+    }
+    public void addOptativeSubject(OptativeSubject subject) {
+        allOptativeSubjects.add(subject);
+    }
+
+    public Integer getOptativeMinimun() {
+        return optativeMinimun;
+    }
 }

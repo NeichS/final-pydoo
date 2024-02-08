@@ -179,6 +179,8 @@ public class VentanaPrincipal {
         centerPanel.add(Box.createVerticalStrut(10));
         register.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(register);
+        JLabel deniedMessage = new JLabel("Mail o contraseña incorrectos");
+        centerPanel.add(Box.createVerticalStrut(10));
 
         CustomButton confirmButton = new CustomButton("Confirmar", "#119A26", 110);
         confirmButton.addActionListener(new ActionListener() {
@@ -197,10 +199,7 @@ public class VentanaPrincipal {
                     passwordField.setText("");
                     cardLayout.show(cardPanel, "MENU ALUMNO");
                 } else {
-                    JLabel deniedMessage = new JLabel("Mail o contraseña incorrectos");
-
                     deniedMessage.setForeground(Color.red);
-                    centerPanel.add(Box.createVerticalStrut(10));
                     deniedMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
                     centerPanel.add(deniedMessage);
                 }
@@ -382,6 +381,10 @@ public class VentanaPrincipal {
 
     private JPanel createAdminSecurityVerif() {
         JPanel adminSecurity = new JPanel(new BorderLayout());
+        adminSecurity.removeAll();
+        adminSecurity.revalidate();
+        adminSecurity.repaint();
+
         JPanel centerPanel = new JPanel();
         JPanel topPanel = customPanelTop("Ingresar Admin");
         adminSecurity.add(topPanel, BorderLayout.NORTH);
@@ -461,8 +464,9 @@ public class VentanaPrincipal {
         cardPanel.add("CAREER PROGRESS", inscriptionPanel.getProgressCareerPanel());
         cardPanel.add("ADMIN SECURITY VERIFICATION", createAdminSecurityVerif());//panel para ingresar pin
         cardPanel.add("ADMIN CARRERAS", panelAdmin.getAdminCarreraPanel()); //menu de admin
-        cardPanel.add("CREATE CAREER", panelAdmin.getCrateCareerPanel());
         cardPanel.add("CREATE STUDY PROGRAM", panelAdmin.getStudyProgramCreatorPanel());
+        cardPanel.add("CREATE OPTATIVE", panelAdmin.getCreateOptativeCreatorPanel());
+        cardPanel.add("CREATE CORRELATIVE", panelAdmin.getCorrelativeSubjectPanel());
         cardPanel.add("CHOOSE CAREER NAME", panelAdmin.getChooseCareerNamePanel());
         cardPanel.add("SUBJECTS AVAILABLE", subjectsAvailable.getSubjectsAvailablePanel());
         cardPanel.add("CHOOSE CAREER 2", subjectsAvailable.getChooseCareerPanel()); //el alumno podra elegir carrera de la cual quiere saber las materias

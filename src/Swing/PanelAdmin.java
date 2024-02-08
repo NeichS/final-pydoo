@@ -1,6 +1,7 @@
 package Swing;
 
 import AppClasses.Career;
+import AppClasses.OptativeSubject;
 import AppClasses.StudyProgram;
 import AppClasses.Subject;
 import javax.swing.*;
@@ -9,13 +10,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PanelAdmin extends VentanaPrincipal{
 
     private JPanel adminCarreraPanel = new JPanel();
-    private JPanel careerCreatorPanel = new JPanel();
+    private JPanel correlativeSubjectPanel = new JPanel();
     private JPanel studyProgramCreatorPanel = new JPanel();
     private JPanel chooseCareerNamePanel = new JPanel();
+    private JPanel optativeCreatorPanel = new JPanel();
 
     PanelAdmin(String s) {
         super(s);
@@ -79,12 +82,7 @@ public class PanelAdmin extends VentanaPrincipal{
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
         CustomButton atras = new CustomButton("Volver", "#116A9A", 110);
-        atras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "ADMIN CARRERAS");
-            }
-        });
+        atras.addActionListener(e -> VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "ADMIN CARRERAS"));
         leftPanel.add(atras);
         studyProgramCreatorPanel.add(leftPanel, BorderLayout.WEST);
 
@@ -106,79 +104,72 @@ public class PanelAdmin extends VentanaPrincipal{
 
         final int[] counter  = {0};
         CustomButton agregarCuatrimestreBtn = new CustomButton("+Cuatrimestre", "#fc9803", 120);
-        agregarCuatrimestreBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                centerPanel.add(Box.createVerticalStrut(10));
-                counter[0]++;
-                int numero = counter[0];
-                JLabel tittleCuatrimestre = new JLabel("Cuatrimestre " + numero);
-                tittleCuatrimestre.setForeground(Color.white);
-                tittleCuatrimestre.setFont(new Font("Arial", 1, 12));
-                centerPanel.add(tittleCuatrimestre);
-                tittleCuatrimestre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        agregarCuatrimestreBtn.addActionListener(e -> {
+            centerPanel.add(Box.createVerticalStrut(10));
+            counter[0]++;
+            int numero = counter[0];
+            JLabel tittleCuatrimestre = new JLabel("Cuatrimestre " + numero);
+            tittleCuatrimestre.setForeground(Color.white);
+            tittleCuatrimestre.setFont(new Font("Arial", 1, 12));
+            centerPanel.add(tittleCuatrimestre);
+            tittleCuatrimestre.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                JTextField escribirMateria = new JTextField();
-                escribirMateria.setMaximumSize(new Dimension(200, 40));
-                escribirMateria.setBackground(Color.decode("#474747"));
-                escribirMateria.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "Materia nombre"));
-                escribirMateria.setForeground(Color.white);
-                centerPanel.add(Box.createVerticalStrut(5));
-                centerPanel.add(escribirMateria);
+            JTextField escribirMateria = new JTextField();
+            escribirMateria.setMaximumSize(new Dimension(200, 40));
+            escribirMateria.setBackground(Color.decode("#474747"));
+            escribirMateria.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "Materia nombre"));
+            escribirMateria.setForeground(Color.white);
+            centerPanel.add(Box.createVerticalStrut(5));
+            centerPanel.add(escribirMateria);
 
-                JCheckBox checkBox = new JCheckBox("Promocionable");
-                checkBox.setBackground(Color.decode("#292929"));
-                checkBox.setForeground(Color.white);
-                checkBox.setBorderPainted(false);
-                centerPanel.add(Box.createVerticalStrut(5));
-                centerPanel.add(checkBox);
-                checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JCheckBox checkBox = new JCheckBox("Promocionable");
+            checkBox.setBackground(Color.decode("#292929"));
+            checkBox.setForeground(Color.white);
+            checkBox.setBorderPainted(false);
+            centerPanel.add(Box.createVerticalStrut(5));
+            centerPanel.add(checkBox);
+            checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                JLabel elegirPlanText = new JLabel("Elegir tipo de plan");
-                elegirPlanText.setForeground(Color.white);
-                elegirPlanText.setFont(new Font("Arial", 0 , 12));
-                centerPanel.add(elegirPlanText);
-                elegirPlanText.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JLabel elegirPlanText = new JLabel("Elegir tipo de plan");
+            elegirPlanText.setForeground(Color.white);
+            elegirPlanText.setFont(new Font("Arial", 0 , 12));
+            centerPanel.add(elegirPlanText);
+            elegirPlanText.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                char[] tipoPlanMateria = new char[1];
-                Character[] opciones = {'A', 'B', 'C', 'D', 'E'};
-                JComboBox<Character> tipoPlanOpciones = new JComboBox<>(opciones);
-                centerPanel.add(Box.createVerticalStrut(10));
-                tipoPlanOpciones.setMaximumRowCount(4);
-                tipoPlanOpciones.setMaximumSize(new Dimension(80,35));
-                centerPanel.add(tipoPlanOpciones);
-                tipoPlanOpciones.setAlignmentX(Component.CENTER_ALIGNMENT);
+            char[] tipoPlanMateria = new char[1];
+            Character[] opciones = {'A', 'B', 'C', 'D', 'E'};
+            JComboBox<Character> tipoPlanOpciones = new JComboBox<>(opciones);
+            centerPanel.add(Box.createVerticalStrut(10));
+            tipoPlanOpciones.setMaximumRowCount(4);
+            tipoPlanOpciones.setMaximumSize(new Dimension(80,35));
+            centerPanel.add(tipoPlanOpciones);
+            tipoPlanOpciones.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                LinkedList<Subject> cuatrimestre = new LinkedList<>();
-                programa.put(numero, cuatrimestre);
+            LinkedList<Subject> cuatrimestre = new LinkedList<>();
+            programa.put(numero, cuatrimestre);
 
-                CustomButton agregarMateria = new CustomButton("Agregar", "#474747", 120);
-                agregarMateria.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String materiaNombre = escribirMateria.getText();
-                        Boolean promocionable = checkBox.isSelected();
-                        if (materiaNombre.isBlank()) {
-                            JOptionPane.showMessageDialog(null, "Debe especificar un nombre para la materia", "Alerta", JOptionPane.ERROR_MESSAGE);
-                        } else {
-                            tipoPlanMateria[0] = (char) tipoPlanOpciones.getSelectedItem();
-                            System.out.println(tipoPlanMateria[0]);
-                            Subject nuevaMateria = new Subject(materiaNombre, promocionable, tipoPlanMateria[0]);
-                            programa.get(numero).add(nuevaMateria);
+            CustomButton agregarMateria = new CustomButton("Agregar", "#474747", 120);
+            agregarMateria.addActionListener(e1 -> {
+                String materiaNombre = escribirMateria.getText();
+                Boolean promocionable = checkBox.isSelected();
+                if (materiaNombre.isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Debe especificar un nombre para la materia", "Alerta", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    tipoPlanMateria[0] = (char) tipoPlanOpciones.getSelectedItem();
+                    Subject nuevaMateria = new Subject(materiaNombre, promocionable, tipoPlanMateria[0]);
+                    programa.get(numero).add(nuevaMateria);
 
-                            JOptionPane.showMessageDialog(null,"Se ha agregado la materia " + materiaNombre +  " al cuatrimestre " + numero, "Exito" , JOptionPane.INFORMATION_MESSAGE);
-                            escribirMateria.setText("");
-                            checkBox.setSelected(false);
-                        }
-                    }
-                });
-                centerPanel.add(Box.createVerticalStrut(10));
-                centerPanel.add(agregarMateria);
-                centerPanel.add(Box.createVerticalStrut(50));
-                agregarMateria.setAlignmentX(Component.CENTER_ALIGNMENT);
-                centerPanel.revalidate();
-                centerPanel.repaint();
-            }
+                    JOptionPane.showMessageDialog(null,"Se ha agregado la materia " + materiaNombre +  " al cuatrimestre " + numero, "Exito" , JOptionPane.INFORMATION_MESSAGE);
+                    escribirMateria.setText("");
+                    checkBox.setSelected(false);
+                }
+            });
+            centerPanel.add(Box.createVerticalStrut(10));
+            centerPanel.add(agregarMateria);
+            centerPanel.add(Box.createVerticalStrut(50));
+            agregarMateria.setAlignmentX(Component.CENTER_ALIGNMENT);
+            centerPanel.revalidate();
+            centerPanel.repaint();
         });
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.decode("#292929"));
@@ -205,8 +196,8 @@ public class PanelAdmin extends VentanaPrincipal{
                 if (respuesta == JOptionPane.YES_OPTION) {
                     JOptionPane.showMessageDialog(null,"Se ha creado el nuevo plan de estudio" , "Exito" , JOptionPane.INFORMATION_MESSAGE);
                     StudyProgram program = new StudyProgram(programa);
-                    createCareerCreator(program);
-                    cardLayout.show(cardPanel, "CREATE CAREER");
+                    createOptativeSubjectCreator(program);
+                    cardLayout.show(cardPanel, "CREATE OPTATIVE");
                 }
             }
         });
@@ -218,22 +209,124 @@ public class PanelAdmin extends VentanaPrincipal{
 
     }
 
-    public void createCareerCreator(StudyProgram programa) {
-        careerCreatorPanel.setBackground(Color.decode("#292929"));
-        careerCreatorPanel.setLayout(new BorderLayout());
-        JPanel panelTop = customPanelTop("Paso 2: Asignar correlativas");
-        careerCreatorPanel.add(panelTop, BorderLayout.NORTH);
+    public void createOptativeSubjectCreator(StudyProgram programa) {
+        optativeCreatorPanel.setBackground(Color.decode("#292929"));
+        optativeCreatorPanel.setLayout(new BorderLayout());
+
+        JPanel panelTop = customPanelTop("Paso 2: Crear materias optativas");
+        optativeCreatorPanel.add(panelTop, BorderLayout.NORTH);
+
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
         CustomButton atras = new CustomButton("Volver", "#116A9A", 110);
-        atras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "ADMIN CARRERAS");
+        atras.addActionListener(e -> VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "ADMIN CARRERAS"));
+        leftPanel.add(atras);
+        optativeCreatorPanel.add(leftPanel, BorderLayout.WEST);
+
+        JScrollPane scrollPane = new JScrollPane();
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(Color.decode("#292929"));
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(Box.createVerticalStrut(20));
+
+        JLabel texto1 = new JLabel("Minima cantidad de materias optativas aprobadas de la carrera");
+        texto1.setFont(new Font("Arial",0,14));
+        texto1.setForeground(Color.white);
+        centerPanel.add(texto1);
+        texto1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(Box.createVerticalStrut(10));
+        SpinnerNumberModel model = new SpinnerNumberModel(
+                0, // valor inicial
+                0, // valor mínimo
+                30, // valor máximo
+                1 // incremento/decremento
+        );
+        JSpinner spinner = new JSpinner(model);
+        spinner.setMaximumSize(new Dimension(40,30));
+        centerPanel.add(spinner);
+        spinner.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(Box.createVerticalStrut(10));
+
+        JTextField escribirMateriaNombre = new JTextField();
+        escribirMateriaNombre.setMaximumSize(new Dimension(200, 40));
+        escribirMateriaNombre.setBackground(Color.decode("#474747"));
+        escribirMateriaNombre.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.decode("#474747")), "Materia nombre"));
+        escribirMateriaNombre.setForeground(Color.white);
+        centerPanel.add(Box.createVerticalStrut(5));
+        centerPanel.add(escribirMateriaNombre);
+
+
+        JCheckBox checkBox = new JCheckBox("Promocionable");
+        checkBox.setBackground(Color.decode("#292929"));
+        checkBox.setForeground(Color.white);
+        checkBox.setBorderPainted(false);
+        centerPanel.add(Box.createVerticalStrut(5));
+        centerPanel.add(checkBox);
+        checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        AtomicInteger creatorCounter = new AtomicInteger(0);
+        CustomButton agregarMateria = new CustomButton("Agregar", "#474747", 120);
+        agregarMateria.addActionListener(e1 -> {
+            String materiaNombre = escribirMateriaNombre.getText();
+            Boolean promocionable = checkBox.isSelected();
+            if (materiaNombre.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Debe especificar un nombre para la materia", "Alerta", JOptionPane.ERROR_MESSAGE);
+            } else {
+                OptativeSubject nuevaMateria = new OptativeSubject(materiaNombre, promocionable);
+                programa.addOptativeSubject(nuevaMateria);
+
+                JOptionPane.showMessageDialog(null,"Se ha agregado la materia optativa exitosamente" + materiaNombre,  "Exito" , JOptionPane.INFORMATION_MESSAGE);
+                escribirMateriaNombre.setText("");
+                checkBox.setSelected(false);
+                creatorCounter.getAndIncrement();
             }
         });
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(agregarMateria);
+        centerPanel.add(Box.createVerticalStrut(50));
+        agregarMateria.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        scrollPane.setViewportView(centerPanel);
+        optativeCreatorPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.decode("#292929"));
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        CustomButton confirmar = new CustomButton("Confirmar", "#119A26",120);
+        confirmar.addActionListener(e -> {
+            Number value = (Number) spinner.getValue();
+            if (creatorCounter.get() < value.intValue()) {
+                JOptionPane.showMessageDialog(null, "El numero de materias creadas es menor al minimo seleccionado", "Error", JOptionPane.WARNING_MESSAGE);
+            } else {
+                int respuesta = JOptionPane.showConfirmDialog(null, "Confirmar creacion de materias optativas?", "Confirmar", JOptionPane.YES_NO_OPTION);
+
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    programa.setOptativeMinimun(value.intValue());
+                    createCorrelativeSubjectCreator(programa);
+                    cardLayout.show(cardPanel, "CREATE CORRELATIVE");
+                }
+            }
+
+        });
+
+        bottomPanel.add(confirmar);
+        optativeCreatorPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+    }
+
+
+    public void createCorrelativeSubjectCreator(StudyProgram programa) {
+        correlativeSubjectPanel.setBackground(Color.decode("#292929"));
+        correlativeSubjectPanel.setLayout(new BorderLayout());
+        JPanel panelTop = customPanelTop("Paso 3: Asignar correlativas");
+        correlativeSubjectPanel.add(panelTop, BorderLayout.NORTH);
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(Color.decode("#292929"));
+        CustomButton atras = new CustomButton("Volver", "#116A9A", 110);
+        atras.addActionListener(e -> VentanaPrincipal.cardLayout.show(VentanaPrincipal.cardPanel, "ADMIN CARRERAS"));
         leftPanel.add(atras);
-        careerCreatorPanel.add(leftPanel, BorderLayout.WEST);
+        correlativeSubjectPanel.add(leftPanel, BorderLayout.WEST);
 
         JPanel centerPanel = new JPanel();
         JScrollPane scrollPane = new JScrollPane(centerPanel);
@@ -243,7 +336,7 @@ public class PanelAdmin extends VentanaPrincipal{
         centerPanel.add(Box.createVerticalStrut(20));
 
         boolean alreadyShown = false;
-        for (int i = 1; i <= programa.getPrograma().size(); i++) {
+        for (int i = 1; i <= programa.getProgram().size(); i++) {
             centerPanel.add(Box.createVerticalStrut(20));
             JLabel tittleCuatrimestre = new JLabel("Cuatrimestre " + i );
             tittleCuatrimestre.setForeground(Color.white);
@@ -251,7 +344,7 @@ public class PanelAdmin extends VentanaPrincipal{
             centerPanel.add(tittleCuatrimestre);
             tittleCuatrimestre.setAlignmentX(Component.CENTER_ALIGNMENT);
             centerPanel.add(Box.createVerticalStrut(20));
-            for (Subject subject : programa.getPrograma().get(i)) {
+            for (Subject subject : programa.getProgram().get(i)) {
                 JPanel subjectRowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
                 subjectRowPanel.setBackground(Color.decode("#292929"));
                 JLabel materiaNombre = new JLabel(subject.getNombre());
@@ -299,7 +392,7 @@ public class PanelAdmin extends VentanaPrincipal{
                 }
             }
         }
-        careerCreatorPanel.add(scrollPane, BorderLayout.CENTER);
+        correlativeSubjectPanel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.decode("#292929"));
@@ -317,14 +410,14 @@ public class PanelAdmin extends VentanaPrincipal{
             }
         });
         bottomPanel.add(confirmar);
-        careerCreatorPanel.add(bottomPanel, BorderLayout.SOUTH);
+        correlativeSubjectPanel.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void createChooseCareerName(StudyProgram program) {
         chooseCareerNamePanel.setBackground(Color.decode("#292929"));
         chooseCareerNamePanel.setLayout(new BorderLayout());
 
-        JPanel topPanel = customPanelTop("Paso 3: elegir nombre de la carrera");
+        JPanel topPanel = customPanelTop("Paso 4: elegir nombre de la carrera");
         chooseCareerNamePanel.add(topPanel, BorderLayout.NORTH);
 
         JPanel leftPanel = new JPanel();
@@ -380,8 +473,11 @@ public class PanelAdmin extends VentanaPrincipal{
     public JPanel getAdminCarreraPanel() {
         return adminCarreraPanel;
     }
-    public JPanel getCrateCareerPanel() {
-        return careerCreatorPanel;
+    public JPanel getCorrelativeSubjectPanel() {
+        return correlativeSubjectPanel;
+    }
+    public JPanel getCreateOptativeCreatorPanel() {
+        return optativeCreatorPanel;
     }
     public JPanel getStudyProgramCreatorPanel() {
         return studyProgramCreatorPanel;
@@ -389,4 +485,5 @@ public class PanelAdmin extends VentanaPrincipal{
     public JPanel getChooseCareerNamePanel() {
         return chooseCareerNamePanel;
     }
+
 }
