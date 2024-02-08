@@ -269,6 +269,10 @@ public class Main {
         licEconomia.addSubject(8, economiaInternacionalAvanzada);
         licEconomia.addSubject(8, metodosEconometricosAvanzados);
 
+        licEconomia.getPlanDeEstudio().setOptativeMinimun(1);
+        licEconomia.addOptativeSubject(new OptativeSubject("Inteligencia artificial basica", true));
+        licEconomia.addOptativeSubject(new OptativeSubject("Python excel", true));
+
 
     }
     public static void main(String[] args) {

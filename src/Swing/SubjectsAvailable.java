@@ -83,7 +83,6 @@ public class SubjectsAvailable extends VentanaPrincipal{
         centerPanel.setBackground(Color.decode("#292929"));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.add(Box.createVerticalStrut(30));
-        System.out.println(selectedCareer.getName());
         for (Subject subject : selectedCareer.getPlanDeEstudio().getAllSubjects()) {
             if (selectedCareer.checkCorrelativas(alumnoCliente, subject)) {
                 JLabel materiaInscribible = new JLabel(subject.getNombre());
