@@ -7,11 +7,13 @@ Algunas materias aprobadas
 :key:  pass : 12345 
 
 
+
 Ninguna materia aprobada
 
 :e-mail: mail : juan.perez@mail.com
 
 :key: pass : 123456
+
 
 
 Todas las materias aprobadas
@@ -21,4 +23,4 @@ Todas las materias aprobadas
 :key: pass : abcdef
 
 
-
+ADMIN PASS :shield: --> 1234
