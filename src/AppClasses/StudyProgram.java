@@ -53,4 +53,8 @@ public class StudyProgram {
     public Integer getOptativeMinimun() {
         return optativeMinimun;
     }
+
+    public void setOptativeMinimun(int i) {
+        optativeMinimun = i;
+    }
 }
