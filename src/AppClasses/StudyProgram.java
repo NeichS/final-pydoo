@@ -45,6 +45,8 @@ public class StudyProgram {
 
     public void addSubject(Integer num , Subject subject) {
         program.get(num).add(subject);
+        allSubjects.add(subject);
+
     }
     public void addOptativeSubject(OptativeSubject subject) {
         allOptativeSubjects.add(subject);

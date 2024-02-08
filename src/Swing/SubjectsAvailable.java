@@ -19,6 +19,9 @@ public class SubjectsAvailable extends VentanaPrincipal{
 
 
     public void createChooseCareerPanel(Student alumno) {
+        chooseCareerPanel.removeAll();
+        chooseCareerPanel.revalidate();
+        chooseCareerPanel.repaint();
         alumnoCliente = alumno;
         chooseCareerPanel.setLayout(new BorderLayout());
         JPanel topPanel = customPanelTop("Elegir carrera");
@@ -80,6 +83,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
         centerPanel.setBackground(Color.decode("#292929"));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.add(Box.createVerticalStrut(30));
+        System.out.println(selectedCareer.getName());
         for (Subject subject : selectedCareer.getPlanDeEstudio().getAllSubjects()) {
             if (selectedCareer.checkCorrelativas(alumnoCliente, subject)) {
                 JLabel materiaInscribible = new JLabel(subject.getNombre());

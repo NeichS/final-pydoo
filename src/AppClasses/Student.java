@@ -104,6 +104,7 @@ public class Student {
     }
     public LinkedList<RegistroNota> getMateriasAprobadasUnicaCarrera(Career career) {
         LinkedList<RegistroNota> materiasAprobadasCarrera = new LinkedList<>();
+
         for (RegistroNota registroNota : materiasAprobadas) {
             if (career.getPlanDeEstudio().getAllSubjects().contains(registroNota.getSubject()) || career.getPlanDeEstudio().getAllOptativeSubjects().contains(registroNota.getSubject())){
                 materiasAprobadasCarrera.add(registroNota);

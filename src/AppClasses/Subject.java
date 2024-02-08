@@ -21,6 +21,7 @@ public class Subject  {
         this.promocion = promocion;
         subjectIdSerial++;
         this.subjectId = subjectIdSerial;
+        this.tipoCorrelativa = 'A';
 
         listaMaterias.add(this);
     }
@@ -76,11 +77,11 @@ public class Subject  {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        Subject otherSubject = (Subject) obj;
-        return Objects.equals(this.nombre, otherSubject.nombre);
+        if (obj instanceof Subject other) {
+            return this.nombre.equals(other.nombre);
+        } else {
+            return false;
+        }
     }
 
     @Override

@@ -342,7 +342,7 @@ public class InscriptionPanel extends VentanaPrincipal {
             JProgressBar careerProgress = new JProgressBar(0,100);
             careerProgress.setStringPainted(true);
             careerProgress.setValue(career.checkProgressCareer(alumnoCliente));
-            if (career.checkProgressCareer(alumnoCliente) == 100) {
+            if (career.checkProgressCareer(alumnoCliente) >= 100) {
                 JLabel congrats = new JLabel("Felicidades se ha recibido en " + career.getName());
                 congrats.setFont(new Font("Arial", 0, 18));
                 congrats.setForeground(Color.decode("#119A26"));

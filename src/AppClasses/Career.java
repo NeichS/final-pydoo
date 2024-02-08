@@ -2,6 +2,7 @@ package AppClasses;
 
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 
 public class Career {
 
@@ -39,22 +40,27 @@ public class Career {
         return  (student.getMateriasAprobadasUnicaCarrera(this).size() * 100) / (planDeEstudio.subjectQuantity() + planDeEstudio.getOptativeMinimun());
     }
     private Boolean cursadasAprobadas(Student student, Subject subject) {
-        if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty()) {
-            return true;
+        if (student.getCursadasAprobadas().isEmpty()) {
+            return false;
         }
-        for (Subject otherSubject : subject.getCorrelativas()) {
-            if (!student.getCursadasAprobadasSinNota().contains(otherSubject)) {
-                return false;
+        if (!(subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty())) {
+            for (Subject otherSubject : subject.getCorrelativas()) {
+                if (!student.getCursadasAprobadasSinNota().contains(otherSubject)) {
+                    return false;
+                }
             }
         }
         return true;
     }
     private Boolean materiasAprobadas(Student student, Subject subject) {
-        if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty() ) { //contempla el caso de que no tenga correlativas
+        if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty()) { //contempla el caso de que no tenga correlativas
             return true;
         }
+        if (student.getMateriasAprobadas().isEmpty() ) {
+            return false;
+        }
         for (Subject otherSubject : subject.getCorrelativas()) {
-            if (!student.getMateriasAprobadasSinNota().contains(otherSubject)) {
+            if (!student.isSubjectPassed(otherSubject)) {
                 return false;
             }
         }
@@ -67,23 +73,24 @@ public class Career {
         Integer cuatrimestreMateria = 0;
         int i = 1;
         //primero tengo que encontrar el cuatrimestre al que pertenece la materia
-        while (cuatrimestreMateria != 0 || i <= programa.size()) {
+        while (cuatrimestreMateria != 0 && i <= programa.size()) {
+            System.out.println("paso: " +i);
             for (Subject otroSubject : programa.get(i)) {
-                if (otroSubject == subject) {
+                if (Objects.equals(otroSubject.getNombre(), subject.getNombre())) {
                     cuatrimestreMateria = i;
-                    break;
                 }
             }
             i++;
         }
-
-        int beginning = i - num; //empiezo a revisar los cuatrimestres
+        int beginning = cuatrimestreMateria - num; //empiezo a revisar los cuatrimestres
         if (beginning < 1) {
             beginning = 1;
         }
-        for (int inicio = beginning; inicio < i; inicio++) {
-            if (!student.getMateriasAprobadasSinNota().contains(programa.get(i))) {
-                return false;
+        for (int inicio = beginning; inicio < cuatrimestreMateria; inicio++) {
+            for (Subject subject1 : programa.get(inicio)) {
+                if (!student.getMateriasAprobadasSinNota().contains(subject1)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -95,11 +102,11 @@ public class Career {
             case 'B':
                 return materiasAprobadas(student, subject);
             case 'C':
-                return (cursadasAprobadas(student, subject) && cuatrimestresAprobados(5, student, subject));
+                return (cuatrimestresAprobados(5, student, subject) && cursadasAprobadas(student, subject));
             case 'D':
-                return (cursadasAprobadas(student, subject) && cuatrimestresAprobados(3, student, subject));
+                return (cuatrimestresAprobados(3, student, subject) && cursadasAprobadas(student, subject));
             case 'E':
-                return (materiasAprobadas(student, subject) && cuatrimestresAprobados(3, student, subject));
+                return (cuatrimestresAprobados(3, student, subject) && materiasAprobadas(student, subject));
             default:
                 return false;
             }
@@ -108,5 +115,9 @@ public class Career {
         public void addOptativeSubject(OptativeSubject subject) {
             this.planDeEstudio.addOptativeSubject(subject);
         }
+
+    public void addSubject(Integer num, Subject subject) {
+        this.planDeEstudio.addSubject(num, subject);
+    }
 
 }
