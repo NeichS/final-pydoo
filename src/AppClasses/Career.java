@@ -43,13 +43,23 @@ public class Career {
         if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty()) {
             return true;
         }
-        return student.getCursadasAprobadasSinNota().contains(subject.getCorrelativas());
+        for (Subject otherSubject : subject.getCorrelativas()) {
+            if (!student.getCursadasAprobadasSinNota().contains(otherSubject)) {
+                return false;
+            }
+        }
+        return true;
     }
     private Boolean materiasAprobadas(Student student, Subject subject) {
         if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty() ) { //contempla el caso de que no tenga correlativas
             return true;
         }
-        return student.getMateriasArobadasSinNota().contains(subject.getCorrelativas());
+        for (Subject otherSubject : subject.getCorrelativas()) {
+            if (!student.getMateriasAprobadasSinNota().contains(otherSubject)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private Boolean cuatrimestresAprobados(Integer num, Student student, Subject subject )  {
@@ -73,7 +83,7 @@ public class Career {
             beginning = 1;
         }
         for (int inicio = beginning; inicio < i; inicio++) {
-            if (!student.getMateriasArobadasSinNota().contains(programa.get(i))) {
+            if (!student.getMateriasAprobadasSinNota().contains(programa.get(i))) {
                 return false;
             }
         }

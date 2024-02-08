@@ -288,6 +288,9 @@ public class InscriptionPanel extends VentanaPrincipal {
         inscriptionSubjectPanel.add(leftPanel, BorderLayout.WEST);
     }
     public void createProgressCareerPanel() {
+        progressCareerPanel.removeAll();
+        progressCareerPanel.revalidate();
+        progressCareerPanel.repaint();
         progressCareerPanel.setLayout(new BorderLayout());
         JPanel topPanel = customPanelTop("Progreso de carrera");
         progressCareerPanel.add(topPanel, BorderLayout.NORTH);
@@ -303,18 +306,27 @@ public class InscriptionPanel extends VentanaPrincipal {
         for (Career career : alumnoCliente.getCursaCarrera()) {
             centerPanel.add(Box.createVerticalStrut(50));
 
+            JProgressBar careerProgress = new JProgressBar(0,100);
+            careerProgress.setStringPainted(true);
+            careerProgress.setValue(career.checkProgressCareer(alumnoCliente));
+            if (career.checkProgressCareer(alumnoCliente) == 100) {
+                JLabel congrats = new JLabel("Felicidades se ha recibido en " + career.getName());
+                congrats.setFont(new Font("Arial", 0, 18));
+                congrats.setForeground(Color.decode("#119A26"));
+                centerPanel.add(Box.createVerticalStrut(20));
+                centerPanel.add(congrats);
+                congrats.setAlignmentX(Component.CENTER_ALIGNMENT);
+                centerPanel.add(Box.createVerticalStrut(10));
+            } else {
+                centerPanel.add(Box.createVerticalStrut(20));
+            }
             JLabel carreraNombre = new JLabel(career.getName());
             carreraNombre.setForeground(Color.white);
             carreraNombre.setFont(new Font("Arial", 0, 12));
-            centerPanel.add(Box.createVerticalStrut(20));
             centerPanel.add(carreraNombre);
             carreraNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             centerPanel.add(Box.createVerticalStrut(10));
-            JProgressBar careerProgress = new JProgressBar(0,100);
-            careerProgress.setStringPainted(true);
-            System.out.println(career.checkProgressCareer(alumnoCliente));
-            careerProgress.setValue(career.checkProgressCareer(alumnoCliente));
             careerProgress.setMaximumSize(new Dimension(300,40));
             careerProgress.setBackground(Color.decode("#474747"));
             careerProgress.setForeground(Color.decode("#116A9A"));

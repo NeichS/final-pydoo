@@ -1,9 +1,8 @@
-package Swing;
-
 import AppClasses.Career;
 import AppClasses.Student;
 import AppClasses.StudyProgram;
 import AppClasses.Subject;
+import Swing.VentanaPrincipal;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -14,8 +13,7 @@ import java.util.Map;
 public class Main {
 
     public static void inicializar() {
-        char[] passAlumnoUno = {'a', 'l', 'p', 'e', 'd', 'o', '.', '1', '0'};
-        Student alumnoUno = new Student("Ignacio", "Sanchez", "nachoagusss1@gmail.com",passAlumnoUno);
+        Student alumnoUno = new Student("Ignacio", "Sanchez", "nachoagusss1@gmail.com","12345".toCharArray());
 
         //materias de lic en sistemas hasta el 6to cuatrimestre
         Subject algebra = new Subject("Algebra", new LinkedList<>());
@@ -128,6 +126,18 @@ public class Main {
 
         alumnoUno.setCursaCarrera(LicSistemas);
         //alumnoUno.setCursaCarrera(LicEconomia);
+
+
+        Student alumnoDos = new Student("Juan", "Pérez", "juan.perez@mail.com", "123456".toCharArray());
+        Student alumnoTres = new Student("María", "García", "maria.garcia@mail.com", "abcdef".toCharArray());
+
+        alumnoDos.setCursaCarrera(LicSistemas);
+
+        alumnoTres.setCursaCarrera(LicSistemas);
+        for (Subject subject : LicSistemas.getPlanDeEstudio().getAllSubjects()) {
+            alumnoTres.addMateriaAprobada(subject, 10);
+        }
+
     }
     public static void main(String[] args) {
         inicializar();

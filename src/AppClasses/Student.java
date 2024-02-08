@@ -144,7 +144,7 @@ public class Student {
         return false;
     }
 
-    public LinkedList<Subject> getMateriasArobadasSinNota() {
+    public LinkedList<Subject> getMateriasAprobadasSinNota() {
         return materiasAprobadasSinNota;
     }
 

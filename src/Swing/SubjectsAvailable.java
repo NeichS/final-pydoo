@@ -43,7 +43,6 @@ public class SubjectsAvailable extends VentanaPrincipal{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     selectedCareer[0] = career;
-                    System.out.println(career.getName());
                     createSubjectsAvailablePanel(selectedCareer[0]);
                     cardLayout.show(cardPanel, "SUBJECTS AVAILABLE");
                 }
@@ -63,7 +62,6 @@ public class SubjectsAvailable extends VentanaPrincipal{
         subjectsAvailablePanel.removeAll();
         subjectsAvailablePanel.revalidate();
         subjectsAvailablePanel.repaint();
-        System.out.println(selectedCareer.getName());
         subjectsAvailablePanel.setBackground(Color.decode("#292929"));
         subjectsAvailablePanel.setLayout(new BorderLayout());
         JPanel topPanel = customPanelTop("Materias a las que se puede inscribir");
@@ -76,14 +74,13 @@ public class SubjectsAvailable extends VentanaPrincipal{
         leftPanel.add(atras);
         subjectsAvailablePanel.add(leftPanel, BorderLayout.WEST);
 
+        JScrollPane scrollPane = new JScrollPane();
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(Color.decode("#292929"));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.add(Box.createVerticalStrut(30));
-
         for (Subject subject : selectedCareer.getPlanDeEstudio().getAllSubjects()) {
             if (selectedCareer.checkCorrelativas(alumnoCliente, subject)) {
-                System.out.println(subject);
                 JLabel materiaInscribible = new JLabel(subject.getNombre());
                 materiaInscribible.setForeground(Color.white);
                 materiaInscribible.setFont(new Font("Arial", 0, 16));
@@ -92,7 +89,8 @@ public class SubjectsAvailable extends VentanaPrincipal{
                 centerPanel.add(Box.createVerticalStrut(20));
             }
         }
-        subjectsAvailablePanel.add(centerPanel, BorderLayout.CENTER);
+        scrollPane.setViewportView(centerPanel);
+        subjectsAvailablePanel.add(scrollPane, BorderLayout.CENTER);
     }
 
     public JPanel getSubjectsAvailablePanel() {
