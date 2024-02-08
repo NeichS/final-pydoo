@@ -240,7 +240,7 @@ public class InscriptionPanel extends VentanaPrincipal {
             centerPanel.add(Box.createVerticalStrut(3));
             titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
             for (Subject subject : plan.getCuatrimestreList(i)) {
-                JButton botonMateria = new CustomButton(subject + "", "#474747", 340);
+                JButton botonMateria = new CustomButton(subject + " (" + subject.getTipoCorrelativa() +") ", "#474747", 340);
                 botonMateria.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e)   {

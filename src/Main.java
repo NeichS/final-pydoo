@@ -200,6 +200,7 @@ public class Main {
 
 // Creamos más instancias de materia ficticias
         Subject economia4 = new Subject("Economía IV", true);
+        economia4.setCorrelativas(economia3);
         Subject finanzasPublicas = new Subject("Finanzas Públicas", false);
         Subject derecho = new Subject("Derecho", false);
         Subject administracion = new Subject("Administración", false);

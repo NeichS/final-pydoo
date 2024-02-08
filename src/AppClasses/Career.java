@@ -71,21 +71,21 @@ public class Career {
         Map<Integer, LinkedList<Subject>> programa = this.planDeEstudio.getProgram();
 
         Integer cuatrimestreMateria = 0;
-        int i = 1;
+        int i = 0;
         //primero tengo que encontrar el cuatrimestre al que pertenece la materia
-        while (cuatrimestreMateria != 0 && i <= programa.size()) {
-            System.out.println("paso: " +i);
+        while ((cuatrimestreMateria == 0) && (i <= programa.size())) {
+            i++;
             for (Subject otroSubject : programa.get(i)) {
                 if (Objects.equals(otroSubject.getNombre(), subject.getNombre())) {
                     cuatrimestreMateria = i;
                 }
             }
-            i++;
         }
-        int beginning = cuatrimestreMateria - num; //empiezo a revisar los cuatrimestres
+        int beginning = cuatrimestreMateria - num;//empiezo a revisar los cuatrimestres
         if (beginning < 1) {
             beginning = 1;
         }
+
         for (int inicio = beginning; inicio < cuatrimestreMateria; inicio++) {
             for (Subject subject1 : programa.get(inicio)) {
                 if (!student.getMateriasAprobadasSinNota().contains(subject1)) {
