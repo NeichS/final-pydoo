@@ -3,16 +3,12 @@ package Swing;
 import AppClasses.Career;
 import AppClasses.StudyProgram;
 import AppClasses.Subject;
-
 import javax.swing.*;
-import javax.swing.text.StyledEditorKit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.cert.CertificateEncodingException;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class PanelAdmin extends VentanaPrincipal{
 
@@ -109,7 +105,7 @@ public class PanelAdmin extends VentanaPrincipal{
         HashMap<Integer, LinkedList<Subject>> programa = new HashMap<>();
 
         final int[] counter  = {0};
-        CustomButton agregarCuatrimestreBtn = new CustomButton("+ Cuatrimestre", "#fc2c03", 150);
+        CustomButton agregarCuatrimestreBtn = new CustomButton("+Cuatrimestre", "#fc9803", 120);
         agregarCuatrimestreBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,12 +143,6 @@ public class PanelAdmin extends VentanaPrincipal{
                 char[] tipoPlanMateria = new char[1];
                 Character[] opciones = {'A', 'B', 'C', 'D', 'E'};
                 JComboBox<Character> tipoPlanOpciones = new JComboBox<>(opciones);
-                tipoPlanOpciones.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        tipoPlanMateria[0] = (char) tipoPlanOpciones.getSelectedItem();
-                    }
-                });
                 centerPanel.add(Box.createVerticalStrut(10));
                 tipoPlanOpciones.setMaximumRowCount(4);
                 tipoPlanOpciones.setMaximumSize(new Dimension(80,35));
@@ -171,6 +161,8 @@ public class PanelAdmin extends VentanaPrincipal{
                         if (materiaNombre.isBlank()) {
                             JOptionPane.showMessageDialog(null, "Debe especificar un nombre para la materia", "Alerta", JOptionPane.ERROR_MESSAGE);
                         } else {
+                            tipoPlanMateria[0] = (char) tipoPlanOpciones.getSelectedItem();
+                            System.out.println(tipoPlanMateria[0]);
                             Subject nuevaMateria = new Subject(materiaNombre, promocionable, tipoPlanMateria[0]);
                             programa.get(numero).add(nuevaMateria);
 
@@ -188,12 +180,10 @@ public class PanelAdmin extends VentanaPrincipal{
                 centerPanel.repaint();
             }
         });
-        centerPanel.add(agregarCuatrimestreBtn);
-        agregarCuatrimestreBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.decode("#292929"));
         bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.add(agregarCuatrimestreBtn);
         CustomButton empezarDeNuevo = new CustomButton("Cancelar", "#FF0000", 120);
         empezarDeNuevo.addActionListener(new ActionListener() {
             @Override
@@ -289,6 +279,7 @@ public class PanelAdmin extends VentanaPrincipal{
                             Subject materiaElegida = Subject.getSubjectByStringName((String) materiasOpciones.getSelectedItem());
                             if (materiaElegida != null) {
                                 subject.setCorrelativas(materiaElegida);
+                                JOptionPane.showMessageDialog(null,"Se ha asignado como correlativa " + materiaElegida +  " a la materia " + subject , "Exito" , JOptionPane.INFORMATION_MESSAGE);
                             } else {
                                 System.out.println("Ocurrio un error, la materia es nula");
                             }

@@ -1,5 +1,6 @@
 package AppClasses;
 
+import javax.security.auth.login.CredentialException;
 import java.util.*;
 
 public class Student {
@@ -9,7 +10,7 @@ public class Student {
     private LinkedList<RegistroNota> cursadasAprobadas = new LinkedList<>(); //con parcial aprobado
     private LinkedList<RegistroNota> materiasAprobadas = new LinkedList<>(); //con final aprobado o parcial promocionado
 
-    private LinkedList<Subject> materiasArobadasSinNota = new LinkedList<>(); //la materia aprobada sin mas
+    private LinkedList<Subject> materiasAprobadasSinNota = new LinkedList<>(); //la materia aprobada sin mas
     private LinkedList<Career> cursaCarrera = new LinkedList<>();
     private LinkedList<Subject> materiasInscripto = new LinkedList<>();
 
@@ -53,8 +54,6 @@ public class Student {
         return mail;
     }
 
-
-
     public static boolean mailInUse(String mail) {
         for (Student student : listaEstudiantes) {
             if (Objects.equals(student.mail, mail)) {
@@ -74,7 +73,7 @@ public class Student {
     }*/
     public void addMateriaAprobada(Subject materia, Integer nota) {
         materiasAprobadas.add(new RegistroNota(materia, nota));
-        materiasArobadasSinNota.add(materia);
+        materiasAprobadasSinNota.add(materia);
     }
 
     public void addCursadaAprobada(Subject materia, Integer nota) {
@@ -111,6 +110,15 @@ public class Student {
     public LinkedList<RegistroNota> getMateriasAprobadas() {
         return materiasAprobadas;
     }
+    public LinkedList<RegistroNota> getMateriasAprobadasUnicaCarrera(Career career) {
+        LinkedList<RegistroNota> materiasAprobadasCarrera = new LinkedList<>();
+        for (RegistroNota registroNota : materiasAprobadas) {
+            if (career.getPlanDeEstudio().getAllSubjects().contains(registroNota.getSubject())){
+                materiasAprobadasCarrera.add(registroNota);
+            }
+        }
+        return materiasAprobadasCarrera;
+    }
     public void addMateriasInscripto(Subject subject) {
         materiasInscripto.add(subject);
     }
@@ -137,7 +145,7 @@ public class Student {
     }
 
     public LinkedList<Subject> getMateriasArobadasSinNota() {
-        return materiasArobadasSinNota;
+        return materiasAprobadasSinNota;
     }
 
     public LinkedList<Subject> getCursadasAprobadasSinNota() {

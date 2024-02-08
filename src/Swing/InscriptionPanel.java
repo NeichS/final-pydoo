@@ -283,7 +283,6 @@ public class InscriptionPanel extends VentanaPrincipal {
                 centerPanel.add(Box.createVerticalStrut(5));
             }
         }
-        inscriptionSubjectPanel.setBackground(Color.decode("#292929"));
         // Agregar el JScrollPane al inscriptionSubjectPanel en lugar del centerPanel directamente
         inscriptionSubjectPanel.add(scrollPane, BorderLayout.CENTER);
         inscriptionSubjectPanel.add(leftPanel, BorderLayout.WEST);
@@ -295,17 +294,11 @@ public class InscriptionPanel extends VentanaPrincipal {
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
         CustomButton atras = new CustomButton("Volver", "#116A94", 110);
-        atras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "MENU ALUMNO");
-            }
-        });
+        atras.addActionListener(e -> cardLayout.show(cardPanel, "MENU ALUMNO"));
         leftPanel.add(atras);
 
         JScrollPane scrollPane = new JScrollPane();
         JPanel centerPanel = new JPanel();
-        scrollPane.setViewportView(centerPanel);
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         for (Career career : alumnoCliente.getCursaCarrera()) {
             centerPanel.add(Box.createVerticalStrut(50));
@@ -336,7 +329,7 @@ public class InscriptionPanel extends VentanaPrincipal {
             historia.setAlignmentX(Component.CENTER_ALIGNMENT);
             centerPanel.add(Box.createVerticalStrut(20));
 
-            if (alumnoCliente.getMateriasAprobadas().isEmpty()) {
+            if (alumnoCliente.getMateriasAprobadas() == null || alumnoCliente.getMateriasAprobadas().isEmpty()) {
                 JLabel sinMaterias = new JLabel("Todavia no tiene materias aprobadas");
                 sinMaterias.setForeground(Color.white);
                 sinMaterias.setFont(new Font("Arial", 0, 16));
@@ -351,7 +344,7 @@ public class InscriptionPanel extends VentanaPrincipal {
                 materiasAprobadas.setAlignmentX(Component.CENTER_ALIGNMENT);
                 centerPanel.add(Box.createVerticalStrut(15));
 
-                for (RegistroNota registro : alumnoCliente.getMateriasAprobadas()){
+                for (RegistroNota registro : alumnoCliente.getMateriasAprobadasUnicaCarrera(career)){
                     JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
                     rowPanel.setBackground(Color.decode("#292929"));
                     JLabel materiaNombre = new JLabel(registro.getSubject().getNombre() + ", ");
@@ -398,6 +391,7 @@ public class InscriptionPanel extends VentanaPrincipal {
         }
 
         centerPanel.setBackground(Color.decode("#292929"));
+        scrollPane.setViewportView(centerPanel);
         progressCareerPanel.add(scrollPane, BorderLayout.CENTER);
         progressCareerPanel.add(leftPanel, BorderLayout.WEST);
     }

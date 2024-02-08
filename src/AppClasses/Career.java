@@ -41,16 +41,16 @@ public class Career {
         if (planDeEstudio.subjectQuantity() == 0) {
             return 0;
         }
-        return  (student.getMateriasAprobadas().size() * 100) / planDeEstudio.subjectQuantity() ;
+        return  (student.getMateriasAprobadasUnicaCarrera(this).size() * 100) / planDeEstudio.subjectQuantity() ;
     }
     private Boolean cursadasAprobadas(Student student, Subject subject) {
-        if (subject.getCorrelativas().isEmpty()) {
+        if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty()) {
             return true;
         }
         return student.getCursadasAprobadasSinNota().contains(subject.getCorrelativas());
     }
     private Boolean materiasAprobadas(Student student, Subject subject) {
-        if (subject.getCorrelativas().isEmpty()) { //contempla el caso de que no tenga correlativas
+        if (subject.getCorrelativas() == null || subject.getCorrelativas().isEmpty() ) { //contempla el caso de que no tenga correlativas
             return true;
         }
         return student.getMateriasArobadasSinNota().contains(subject.getCorrelativas());

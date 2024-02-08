@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class StudyProgram {
     private Map<Integer, LinkedList<Subject>> programa;
-    private static LinkedList<StudyProgram> planesCreados = new LinkedList<>();
     private LinkedList<Subject> allSubjects = new LinkedList<>();
 
     public StudyProgram(Map<Integer, LinkedList<Subject>> programa) {
@@ -18,8 +17,6 @@ public class StudyProgram {
                 allSubjects.add(subject);
             }
         }
-
-        planesCreados.add(this);
     }
     //i es el cuatrimestre
     public LinkedList<Subject> getCuatrimestreList(Integer i) {

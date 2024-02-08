@@ -1,6 +1,5 @@
 package Swing;
 
-import AppClasses.CantidadCuatrimestreException;
 import AppClasses.Career;
 import AppClasses.Student;
 import AppClasses.Subject;
@@ -28,12 +27,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
         CustomButton atras = new CustomButton("Volver", "#116A94", 110);
-        atras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "MENU ALUMNO");
-            }
-        });
+        atras.addActionListener(e -> cardLayout.show(cardPanel, "MENU ALUMNO"));
         leftPanel.add(atras);
         chooseCareerPanel.add(leftPanel, BorderLayout.WEST);
 
@@ -49,6 +43,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     selectedCareer[0] = career;
+                    System.out.println(career.getName());
                     createSubjectsAvailablePanel(selectedCareer[0]);
                     cardLayout.show(cardPanel, "SUBJECTS AVAILABLE");
                 }
@@ -68,6 +63,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
         subjectsAvailablePanel.removeAll();
         subjectsAvailablePanel.revalidate();
         subjectsAvailablePanel.repaint();
+        System.out.println(selectedCareer.getName());
         subjectsAvailablePanel.setBackground(Color.decode("#292929"));
         subjectsAvailablePanel.setLayout(new BorderLayout());
         JPanel topPanel = customPanelTop("Materias a las que se puede inscribir");
@@ -76,12 +72,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.decode("#292929"));
         CustomButton atras = new CustomButton("Volver", "#116A94", 110);
-        atras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "CHOOSE CAREER 2");
-            }
-        });
+        atras.addActionListener(e -> cardLayout.show(cardPanel, "CHOOSE CAREER 2"));
         leftPanel.add(atras);
         subjectsAvailablePanel.add(leftPanel, BorderLayout.WEST);
 
@@ -92,6 +83,7 @@ public class SubjectsAvailable extends VentanaPrincipal{
 
         for (Subject subject : selectedCareer.getPlanDeEstudio().getAllSubjects()) {
             if (selectedCareer.checkCorrelativas(alumnoCliente, subject)) {
+                System.out.println(subject);
                 JLabel materiaInscribible = new JLabel(subject.getNombre());
                 materiaInscribible.setForeground(Color.white);
                 materiaInscribible.setFont(new Font("Arial", 0, 16));
